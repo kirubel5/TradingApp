@@ -5,26 +5,24 @@
    
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#2196F3</Color>
-            <Style TargetType="Button">
-                <Setter Property="TextColor" Value="White"></Setter>
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Disabled">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#332196F3" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
+
+            <!--#region Colors -->
+            <Color x:Key="GlyphDark">#727272</Color>
+            <Color x:Key="Gray-50">#323740</Color>
+            <Color x:Key="Gray-100">#333942</Color>
+            <Color x:Key="Gray-200">#454D59</Color>
+            <Color x:Key="Gray-300">#57616F</Color>
+            <Color x:Key="Gray-400">#656F81</Color>
+            <Color x:Key="Gray-600">#848E9F</Color>
+            <Color x:Key="Gray-700">#9BA3B1</Color>
+            <Color x:Key="Gray-800">#BDC3CB</Color>
+            <Color x:Key="Gray-900">#EBEDEF</Color>
+            <Color x:Key="Gray-White">#ffffff</Color>
+            <Color x:Key="Gray-Bg">#2F343C</Color>
+            <Color x:Key="Black">#000000</Color>
+            <Color x:Key="GrayShadowColorDark">#333942</Color>
+            <!--#endregion-->
+
         </ResourceDictionary>        
     </Application.Resources>
 </Application>

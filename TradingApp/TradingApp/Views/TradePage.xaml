@@ -1,12 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TradingApp.Views.TradePage">
+             xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
+             x:Class="TradingApp.Views.TradePage"
+             Title="Reset Password"
+             BackgroundColor="{StaticResource Black}">
+
+    <ContentPage.BindingContext>
+        <viewmodels:TradeViewModel/>
+    </ContentPage.BindingContext>
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <shimmer:SfShimmer 
+                x:Name="ShimmerView" 
+                IsActive="{Binding ShimmerIsActive}" 
+                VerticalOptions="FillAndExpand" 
+                Type="Profile"
+                Color="{StaticResource Gray-200}">              
+
+                <shimmer:SfShimmer.Content>
+                    <CollectionView
+                        x:Name="WorkerCollection"                            
+                        ItemsSource ="{Binding SavedTrades}"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        HeightRequest="40"
+                        SelectionMode="Single"
+                        BackgroundColor="{StaticResource Gray-100}"
+                        SelectionChangedCommand="{Binding SelectCommand}"
+                        SelectedItem="{Binding SelectedRequest}">
+                        
+                    </CollectionView>                    
+                </shimmer:SfShimmer.Content>
+            </shimmer:SfShimmer>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
