@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingApp.Android", "TradingApp\TradingApp.Android\TradingApp.Android.csproj", "{E0ECEB27-952B-46EF-98A6-DDF013243F07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingApp", "TradingApp\TradingApp\TradingApp.csproj", "{F463DC82-E9B0-4578-A979-0B804FC84194}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0ECEB27-952B-46EF-98A6-DDF013243F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0ECEB27-952B-46EF-98A6-DDF013243F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0ECEB27-952B-46EF-98A6-DDF013243F07}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E0ECEB27-952B-46EF-98A6-DDF013243F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0ECEB27-952B-46EF-98A6-DDF013243F07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0ECEB27-952B-46EF-98A6-DDF013243F07}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F463DC82-E9B0-4578-A979-0B804FC84194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F463DC82-E9B0-4578-A979-0B804FC84194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F463DC82-E9B0-4578-A979-0B804FC84194}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F463DC82-E9B0-4578-A979-0B804FC84194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F463DC82-E9B0-4578-A979-0B804FC84194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F463DC82-E9B0-4578-A979-0B804FC84194}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {957B6895-1AB1-4899-BAC6-D073DBCFD224}
+	EndGlobalSection
+EndGlobal
