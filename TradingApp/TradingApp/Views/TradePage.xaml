@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
              x:Class="TradingApp.Views.TradePage"
-             Title="Reset Password"
-             BackgroundColor="{StaticResource Black}">
+             Title="Trade">
 
     <ContentPage.BindingContext>
         <viewmodels:TradeViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <ScrollView>
+        <ScrollView BackgroundColor="{StaticResource Background}">
             <shimmer:SfShimmer 
                 x:Name="ShimmerView" 
                 IsActive="{Binding ShimmerIsActive}" 
                 VerticalOptions="FillAndExpand" 
-                Type="Profile"
-                Color="{StaticResource Gray-200}">              
+                Type="Persona"                
+                Color="{StaticResource Gray-200}">
 
                 <shimmer:SfShimmer.Content>
                     <CollectionView
@@ -27,11 +27,94 @@ xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.
                         ItemSizingStrategy="MeasureFirstItem"
                         HeightRequest="40"
                         SelectionMode="Single"
-                        BackgroundColor="{StaticResource Gray-100}"
-                        SelectionChangedCommand="{Binding SelectCommand}"
-                        SelectedItem="{Binding SelectedRequest}">
-                        
-                    </CollectionView>                    
+                        BackgroundColor="{StaticResource Background}">
+
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout
+                                Orientation="Vertical"
+                                ItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.EmptyView>
+                            <ContentView>
+                                <StackLayout
+                                    BackgroundColor="Transparent"
+                                    Spacing="0"
+                                    VerticalOptions="Center">
+
+                                    <!--  Display the svg illustration image  -->
+                                    <Image
+                                        HeightRequest="350"
+                                        WidthRequest="200"
+                                        Source="{Binding ImageName}"
+                                        VerticalOptions="Center"/>
+
+                                    <!--  Label to display header  -->
+                                    <Label
+                                        Margin="0,32,0,8"
+                                        FontSize="20"
+                                        VerticalTextAlignment="Center" />
+
+                                    <!--  Label to display content  -->
+                                    <Label
+                                        Margin="8,0,8,0"
+                                        FontSize="16"
+                                        Text="{Binding Message}"
+                                        VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </ContentView>
+                        </CollectionView.EmptyView>
+
+                       
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0" Margin="0">
+                                    <Frame
+                                        Margin="7,5,7,0"                                        
+                                        BackgroundColor="{StaticResource GridBackground}"
+                                        BorderColor="{StaticResource Background}"
+                                        CornerRadius="20"
+                                        HasShadow="True">
+
+                                        <Grid   
+                                            BackgroundColor="Red"
+                                            Margin="0"
+                                            ColumnSpacing="0"
+                                            HorizontalOptions="FillAndExpand"
+                                            RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                                            ColumnDefinitions="Auto, *, Auto"
+                                            RowSpacing="0"
+                                            VerticalOptions="FillAndExpand">
+
+                                            <!--Icon Image-->
+                                            <Image
+                                                Grid.RowSpan="3"
+                                                Margin="0"
+                                                Aspect="AspectFit"
+                                                HeightRequest="60"
+                                                WidthRequest="50"
+                                                Source="TradeIcon.png"/>
+
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="15"
+                                                Margin="19,0,0,0"
+                                                HorizontalOptions="Start"
+                                                LineBreakMode="TailTruncation"
+                                                MaxLines="1"
+                                                FontFamily="Montserrat-Medium"
+                                                Text="{Binding Name}"
+                                                VerticalOptions="Center" />
+
+
+
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </shimmer:SfShimmer.Content>
             </shimmer:SfShimmer>
         </ScrollView>

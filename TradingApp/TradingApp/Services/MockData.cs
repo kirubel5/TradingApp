@@ -16,9 +16,9 @@ namespace TradingApp.Services
 
         public List<TradeModel> Trades = new List<TradeModel>()
         {
-            new TradeModel {Id = 1, Name = "BTC_USDT", EntryPrice = 2312.12, StopLossPrice = 2312.11, TakeProfitPrice = 2322.1, Status = "InProgress", Percentage = 2.31},
-            new TradeModel {Id = 2, Name = "TONCOIN_USDT", EntryPrice = 2.12, StopLossPrice = 2.11, TakeProfitPrice = 2.1, Status = "Loss", Percentage = 0.74},
-            new TradeModel {Id = 3, Name = "HIGH_USDT", EntryPrice = 23.12, StopLossPrice = 23.11, TakeProfitPrice = 23.1, Status = "Gain", Percentage = 3.26}
+            new TradeModel {Id = 1, Name = "BTC_USDT", EntryPrice = 2312.12, StopLossPrice = 2312.11, TakeProfitPrice = 2322.1, Status = "InProgress", Percentage = 2.31, EntryDate = DateTime.Now, ExitDate = DateTime.Now},
+            new TradeModel {Id = 2, Name = "TONCOIN_USDT", EntryPrice = 2.12, StopLossPrice = 2.11, TakeProfitPrice = 2.1, Status = "Loss", Percentage = 0.74, EntryDate = DateTime.Now, ExitDate = DateTime.Now},
+            new TradeModel {Id = 3, Name = "HIGH_USDT", EntryPrice = 23.12, StopLossPrice = 23.11, TakeProfitPrice = 23.1, Status = "Gain", Percentage = 3.26, EntryDate = DateTime.Now, ExitDate = DateTime.Now}
         };
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MvvmHelpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using TradingApp.Models;
 using TradingApp.Services;
 
@@ -10,6 +11,9 @@ namespace TradingApp.ViewModels
     {
         #region Fields
         private bool shimmerIsActive;
+        private string imageName;
+        private string message;
+
         private IEnumerable<TradeModel> savedTrades;
 
         public ObservableRangeCollection<TradeModel> SavedTrades { get; set; }
@@ -22,6 +26,16 @@ namespace TradingApp.ViewModels
         }
 
         #region Properties
+        public string ImageName
+        {
+            get => imageName;
+            set => SetProperty(ref imageName, value);
+        }
+        public string Message
+        {
+            get => message;
+            set => SetProperty(ref message, value);
+        }
         public bool ShimmerIsActive
         {
             get => shimmerIsActive;
@@ -31,6 +45,11 @@ namespace TradingApp.ViewModels
         #endregion
 
         #region Commands
+        public ICommand ShowAllTradesCommand { get; }
+        public ICommand ShowDoneTradesCommand { get; }
+        public ICommand ShowInProgressTradesCommand { get; }
+        public ICommand ShowGainTradesCommand { get; }
+        public ICommand ShowLossTradesCommand { get; }
         #endregion
 
         #region Methods    

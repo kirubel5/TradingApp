@@ -13,5 +13,7 @@ namespace TradingApp.Models
         public double TakeProfitPrice { get; set; }
         public string Status { get; set; } = string.Empty;
         public double Percentage { get; set; }
+        public DateTime EntryDate { get; set; }
+        public DateTime ExitDate { get; set; }
     }
 }

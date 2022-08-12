@@ -11,14 +11,17 @@ namespace TradingApp
 
         public App()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjE2MjM3QDMyMzAyZTMxMmUzMFZWVEI2TFhmemxZSWVJVVphTExLQ1B5a1VHdngvY0ljcmtaMmZxa2ZPQjQ9");
+
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
+            base.OnStart();
+            await Shell.Current.GoToAsync("//TradePage");
         }
 
         protected override void OnSleep()

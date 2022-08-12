@@ -20,6 +20,8 @@
             <Color x:Key="Gray-White">#ffffff</Color>
             <Color x:Key="Gray-Bg">#2F343C</Color>
             <Color x:Key="Black">#000000</Color>
+            <Color x:Key="Background">#1E1E2A</Color>
+            <Color x:Key="GridBackground">#2B2B38</Color>
             <Color x:Key="GrayShadowColorDark">#333942</Color>
             <!--#endregion-->
 
