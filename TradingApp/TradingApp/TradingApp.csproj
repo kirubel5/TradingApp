@@ -6,6 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\Cambria.ttf" />
+    <None Remove="Resources\Fonts\cambriab.ttf" />
+    <None Remove="Resources\Fonts\Montserrat-Bold.ttf" />
+    <None Remove="Resources\Fonts\Montserrat-Medium.ttf" />
+    <None Remove="Resources\Fonts\Montserrat-Regular.ttf" />
+    <None Remove="Resources\Fonts\Montserrat-SemiBold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\Cambria.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\cambriab.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Montserrat-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Montserrat-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Montserrat-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Montserrat-SemiBold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
     <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="20.2.0.43" />
     <PackageReference Include="Syncfusion.Xamarin.Core" Version="20.2.0.43" />

@@ -4,15 +4,39 @@
              xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
+             xmlns:converters="clr-namespace:TradingApp.Converters"
              x:Class="TradingApp.Views.TradePage"
-             Title="Trade">
+             Title="Trade"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <viewmodels:TradeViewModel/>
     </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StatusToColorConverter x:Key="statusToColor"/>
+        </ResourceDictionary>
 
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Light=LightSkyBlue, Dark=#7D7D7D}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <ScrollView BackgroundColor="{StaticResource Background}">
+        <ScrollView BackgroundColor="{StaticResource Background}">            
             <shimmer:SfShimmer 
                 x:Name="ShimmerView" 
                 IsActive="{Binding ShimmerIsActive}" 
@@ -21,21 +45,31 @@
                 Color="{StaticResource Gray-200}">
 
                 <shimmer:SfShimmer.Content>
-                    <CollectionView
-                        x:Name="WorkerCollection"                            
-                        ItemsSource ="{Binding SavedTrades}"
-                        ItemSizingStrategy="MeasureFirstItem"
-                        HeightRequest="40"
-                        SelectionMode="Single"
-                        BackgroundColor="{StaticResource Background}">
+                    <Grid RowDefinitions="auto, *">
+                        <Frame
+                            BackgroundColor="{StaticResource GridBackground}"
+                            Margin="-5,10,-5,10"
+                            HeightRequest="10"
+                            Opacity="1"
+                            />
+
+
+                        <CollectionView
+                            Grid.Row="1"
+                            x:Name="WorkerCollection"                            
+                            ItemsSource ="{Binding SavedTrades}"
+                            ItemSizingStrategy="MeasureAllItems"
+                            HeightRequest="50"
+                            SelectionMode="None"
+                            BackgroundColor="{StaticResource Background}">
 
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout
                                 Orientation="Vertical"
-                                ItemSpacing="10"/>
+                                ItemSpacing="7"/>
                         </CollectionView.ItemsLayout>
 
-                        <CollectionView.EmptyView>
+                            <CollectionView.EmptyView>
                             <ContentView>
                                 <StackLayout
                                     BackgroundColor="Transparent"
@@ -65,56 +99,150 @@
                             </ContentView>
                         </CollectionView.EmptyView>
 
-                       
+                            <CollectionView.Header>
+                            <StackLayout Padding="0" Orientation="Horizontal" >
+                                    <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="10,0,10,0">
+                                        <buttons:SfChipGroup
+		                                    ChipBackgroundColor="{StaticResource GridBackground}"
+		                                    ChipTextColor="#FF202020"
+		                                    Type="Action">
+                                    
+                                            <buttons:SfChipGroup.ChipLayout>
+                                                <StackLayout Orientation="Horizontal"/>
+                                            </buttons:SfChipGroup.ChipLayout>
+                                    
+                                            <buttons:SfChipGroup.Items>
+                                                <buttons:SfChip Text="  All   " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
+                                                <buttons:SfChip Text=" In Progress " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
+                                                <buttons:SfChip Text=" Done " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
+                                                <buttons:SfChip Text=" Gain " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
+                                                <buttons:SfChip Text=" Loss " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
+                                            </buttons:SfChipGroup.Items>
+                                        </buttons:SfChipGroup>
+                                    </ScrollView>
+                                </StackLayout>
+                        </CollectionView.Header>
 
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Padding="0" Margin="0">
-                                    <Frame
-                                        Margin="7,5,7,0"                                        
-                                        BackgroundColor="{StaticResource GridBackground}"
-                                        BorderColor="{StaticResource Background}"
-                                        CornerRadius="20"
-                                        HasShadow="True">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <SwipeView>
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems Mode="Execute">
+                                                <SwipeItem 
+                                                    Text="Close Trade"
+                                                    BackgroundColor="{StaticResource GridBackground}"                                                    
+                                                    Command="{Binding LeftSwipeCommand}"/>                                                
+                                            </SwipeItems>
+                                        </SwipeView.LeftItems>
+                                        <Grid Padding="0" Margin="0">
+                                            <Frame
+                                            HeightRequest="55"
+                                            Margin="7,5,7,0"                                        
+                                            BackgroundColor="{StaticResource GridBackground}"
+                                            BorderColor="{StaticResource Background}"
+                                            CornerRadius="20"
+                                            HasShadow="True">
 
-                                        <Grid   
-                                            BackgroundColor="Red"
-                                            Margin="0"
+                                                <Grid
+                                            Margin="-9"
                                             ColumnSpacing="0"
                                             HorizontalOptions="FillAndExpand"
                                             RowDefinitions="Auto, Auto, Auto, Auto, Auto"
-                                            ColumnDefinitions="Auto, *, Auto"
+                                            ColumnDefinitions="Auto, *, *"
                                             RowSpacing="0"
                                             VerticalOptions="FillAndExpand">
 
-                                            <!--Icon Image-->
-                                            <Image
-                                                Grid.RowSpan="3"
-                                                Margin="0"
+                                                    <!--Icon Image-->
+                                                    <Image
+                                                Margin="0,-2,0,0"
                                                 Aspect="AspectFit"
-                                                HeightRequest="60"
-                                                WidthRequest="50"
+                                                HeightRequest="35"
+                                                WidthRequest="35"
                                                 Source="TradeIcon.png"/>
 
-                                            <Label
+                                                    <Label
+                                                Style="{StaticResource SimpleLabelStyle}"
                                                 Grid.Column="1"
-                                                FontSize="15"
-                                                Margin="19,0,0,0"
+                                                FontSize="14"
+                                                Margin="4,0,0,0"
+                                                FontFamily="Montserrat-Bold"
+                                                Text="{Binding Name}" />
+
+                                                    <Label
+                                                Style="{StaticResource SimpleLabelStyle}"
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                FontSize="11"
+                                                Margin="-25,5,0,0"
+                                                Text="{Binding EntryDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
+
+                                                    <Label
+                                                Style="{StaticResource SimpleLabelStyle}"
+                                                Grid.Row="3"
+                                                Grid.Column="1"
+                                                FontSize="11"
+                                                Margin="-25,0,0,0"
+                                                Text="{Binding ExitDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
+
+                                                    <StackLayout
+                                                Orientation="Horizontal"
+                                                Grid.Row="2"
+                                                Grid.Column="2"
                                                 HorizontalOptions="Start"
-                                                LineBreakMode="TailTruncation"
-                                                MaxLines="1"
-                                                FontFamily="Montserrat-Medium"
-                                                Text="{Binding Name}"
-                                                VerticalOptions="Center" />
+                                                VerticalOptions="Start"
+                                                Margin="0,0,0,0">
 
+                                                        <Label
+                                                    Style="{StaticResource SimpleLabelStyle}"
+                                                    TextColor="LimeGreen"
+                                                    Margin="-20,5,0,0"
+                                                    FontSize="12"
+                                                    FontFamily="Cambria"
+                                                    Text="{Binding TakeProfitPrice}" />
 
+                                                        <Label
+                                                    Style="{StaticResource SimpleLabelStyle}"
+                                                    Margin="-2,3,0,0"
+                                                    FontSize="12"
+                                                    FontFamily="Cambria"
+                                                    Text="/" />
 
+                                                        <Label
+                                                    Style="{StaticResource SimpleLabelStyle}"
+                                                    TextColor="Red"
+                                                    Margin="-2,5,0,0"
+                                                    FontSize="12"
+                                                    FontFamily="Cambria"
+                                                    Text="{Binding StopLossPrice}" />
+                                                    </StackLayout>
+
+                                                    <Label
+                                                Grid.Row="3"
+                                                Grid.Column="2"
+                                                Style="{StaticResource SimpleLabelStyle}"
+                                                TextColor="{StaticResource Gray-700}"
+                                                Margin="-20,1,0,0"
+                                                FontSize="12"
+                                                FontFamily="Cambria"
+                                                Text="{Binding StopLossPrice}" />
+
+                                                    <Label
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                HorizontalOptions="End"
+                                                Style="{StaticResource SimpleLabelStyle}"
+                                                Margin="0,-5,7,0"
+                                                FontSize="13"
+                                                Text="{Binding Percentage, StringFormat='{0:} %', Converter={StaticResource statusToColor}}" />
+
+                                                </Grid>
+                                            </Frame>
                                         </Grid>
-                                    </Frame>
-                                </Grid>
-                            </DataTemplate>
+                                    </SwipeView>
+                                </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
+                    </Grid>
                 </shimmer:SfShimmer.Content>
             </shimmer:SfShimmer>
         </ScrollView>

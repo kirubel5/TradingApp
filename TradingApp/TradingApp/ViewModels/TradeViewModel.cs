@@ -50,6 +50,7 @@ namespace TradingApp.ViewModels
         public ICommand ShowInProgressTradesCommand { get; }
         public ICommand ShowGainTradesCommand { get; }
         public ICommand ShowLossTradesCommand { get; }
+        public ICommand LeftSwipeCommand { get; }
         #endregion
 
         #region Methods    
