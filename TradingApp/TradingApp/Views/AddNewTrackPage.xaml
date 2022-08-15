@@ -1,12 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              x:Class="TradingApp.Views.AddNewTrackPage">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:AddNewTrackViewModel/>
+    </ContentPage.BindingContext>
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView BackgroundColor="{StaticResource Background}">
+            <Grid RowDefinitions="auto, *, auto" 
+                  BackgroundColor="{StaticResource Background}" 
+                  RowSpacing="0" Margin="0,0,0,0">
+
+                <!--Navigation bar-->
+                <Frame                      
+                    BackgroundColor="{StaticResource GridBackground}"
+                    Margin="2,10,2,16"
+                    HeightRequest="10"
+                    HasShadow="True"
+                    CornerRadius="15">
+
+                    <Grid ColumnDefinitions="*, auto">
+                        <Label 
+                            Text="Add Track"
+                            Style="{StaticResource SimpleLabelStyle}"
+                            Margin="10,-13,0,-10"
+                            FontFamily="Montserrat-Regular"
+                            FontSize="25"/>
+
+                        <buttons:SfButton
+                            Grid.Column="1"
+                            HorizontalOptions="EndAndExpand"
+                            HeightRequest="30"
+                            WidthRequest="95"
+                            Text="Add"
+                            BackgroundColor="{StaticResource Background}"
+                            Margin="10,-13,-13,-13"
+                            CornerRadius="19"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="14"
+                            TextColor="{StaticResource Gray-800}"
+                            Command="{Binding BackCommand}"/>
+                    </Grid>
+                </Frame>
+
+
+
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
