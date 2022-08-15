@@ -7,7 +7,8 @@
              xmlns:converters="clr-namespace:TradingApp.Converters"
              x:Class="TradingApp.Views.TradePage"
              Title="Trade"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <viewmodels:TradeViewModel/>
@@ -16,47 +17,106 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:StatusToColorConverter x:Key="statusToColor"/>
-        </ResourceDictionary>
-
-        <Style TargetType="Grid">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Selected">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Light=LightSkyBlue, Dark=#7D7D7D}"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
+        </ResourceDictionary>        
     </ContentPage.Resources>
     
     <ContentPage.Content>
-        <ScrollView BackgroundColor="{StaticResource Background}">            
-            <shimmer:SfShimmer 
-                x:Name="ShimmerView" 
-                IsActive="{Binding ShimmerIsActive}" 
-                VerticalOptions="FillAndExpand" 
-                Type="Persona"                
-                Color="{StaticResource Gray-200}">
+        <ScrollView BackgroundColor="{StaticResource Background}"> 
+            
+            <Grid RowDefinitions="auto, *, auto" 
+                  BackgroundColor="{StaticResource Background}" 
+                  RowSpacing="0" 
+                  Margin="0,0,0,0">
 
-                <shimmer:SfShimmer.Content>
-                    <Grid RowDefinitions="auto, *">
-                        <Frame
+                <!--Navigation Bar-->
+                <Frame                           
+                    BackgroundColor="{StaticResource GridBackground}"
+                    Margin="2,10,2,16"
+                    HeightRequest="10"
+                    HasShadow="True"
+                    CornerRadius="15">
+                    
+                    <Grid ColumnDefinitions="*, auto">
+                        <Label 
+                            Text="Trade"
+                            Style="{StaticResource SimpleLabelStyle}"
+                            Margin="10,-13,0,-10"
+                            FontFamily="Montserrat-Regular"
+                            FontSize="25"/>
+                        <buttons:SfButton
+                            Grid.Column="1"
+                            HorizontalOptions="EndAndExpand"
+                            HeightRequest="30"
+                            WidthRequest="95"
+                            Text="Add"
+                            BackgroundColor="{StaticResource Background}"
+                            Margin="10,-13,-13,-13"
+                            CornerRadius="19"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="14"
+                            TextColor="{StaticResource Gray-800}"
+                            Command="{Binding AddCommand}"/>
+                        
+                    </Grid>                           
+                </Frame>
+
+                <!--Tabbar-->
+                <Frame            
+                    Grid.Row="2"
+                    BackgroundColor="{StaticResource GridBackground}"
+                    Margin="0,1,0,-10"
+                    HeightRequest="15"
+                    HasShadow="False"
+                    CornerRadius="15">
+
+                    <Grid ColumnDefinitions="*, *">
+
+                        <buttons:SfButton                                    
+                            ShowIcon="False"
+                            ImageSource="Track.png"
+                            ImageAlignment="Top"
+                            ImageWidth="20"
+                            Margin="20,-15,0,-5"
+                            Grid.Column="0"
+                            HorizontalOptions="Center"
+                            HeightRequest="20"
+                            WidthRequest="50"
                             BackgroundColor="{StaticResource GridBackground}"
-                            Margin="-5,10,-5,10"
-                            HeightRequest="10"
-                            Opacity="1"
-                            />
+                            CornerRadius="19"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="1"
+                            BackgroundImage="Track.png"
+                            TextColor="{StaticResource Gray-800}"
+                            Command="{Binding TrackCommand}"/>
 
+                        <buttons:SfButton
+                            BackgroundImage="Trade.png"
+                            Margin="0,-15,0,-5"
+                            Grid.Column="1"
+                            HorizontalOptions="Center"
+                            HeightRequest="30"
+                            WidthRequest="60"
+                            BackgroundColor="{StaticResource GridBackground}"
+                            CornerRadius="19"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="14"
+                            TextColor="{StaticResource Gray-800}"
+                            Command="{Binding TradeCommand}"/>
+                    </Grid>
+                </Frame>
+                <shimmer:SfShimmer 
+                    Grid.Row="1"
+                    x:Name="ShimmerView" 
+                    IsActive="{Binding ShimmerIsActive}" 
+                    VerticalOptions="FillAndExpand" 
+                    Type="Feed"                
+                    Color="{StaticResource Gray-200}">
 
+                    <shimmer:SfShimmer.Content>
                         <CollectionView
+                            Margin="0,-15,0,0"                            
                             Grid.Row="1"
-                            x:Name="WorkerCollection"                            
+                            x:Name="SavedTradeCollection"                            
                             ItemsSource ="{Binding SavedTrades}"
                             ItemSizingStrategy="MeasureAllItems"
                             HeightRequest="50"
@@ -100,7 +160,7 @@
                         </CollectionView.EmptyView>
 
                             <CollectionView.Header>
-                            <StackLayout Padding="0" Orientation="Horizontal" >
+                                <StackLayout Padding="0,10,0,0" Orientation="Horizontal" Margin="0,0,0,0">
                                     <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="10,0,10,0">
                                         <buttons:SfChipGroup
 		                                    ChipBackgroundColor="{StaticResource GridBackground}"
@@ -112,139 +172,186 @@
                                             </buttons:SfChipGroup.ChipLayout>
                                     
                                             <buttons:SfChipGroup.Items>
-                                                <buttons:SfChip Text="  All   " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
-                                                <buttons:SfChip Text=" In Progress " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
-                                                <buttons:SfChip Text=" Done " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
-                                                <buttons:SfChip Text=" Gain " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
-                                                <buttons:SfChip Text=" Loss " BackgroundColor="{StaticResource GridBackground}" CornerRadius="20" FontFamily="Montserrat-Regular" FontSize="13"/>
+                                                <buttons:SfChip Text="  All   " 
+                                                                BackgroundColor="{StaticResource GridBackground}" 
+                                                                CornerRadius="20" FontFamily="Montserrat-Regular" 
+                                                                FontSize="13"
+                                                                Command="{Binding ShowAllTradesCommand}"/>
+                                                <buttons:SfChip Text=" In Progress " 
+                                                                BackgroundColor="{StaticResource GridBackground}" 
+                                                                CornerRadius="20" FontFamily="Montserrat-Regular" 
+                                                                FontSize="13"
+                                                                Command="{Binding ShowInProgressTradesCommand}"/>
+                                                <buttons:SfChip Text=" Done " 
+                                                                BackgroundColor="{StaticResource GridBackground}" 
+                                                                CornerRadius="20" FontFamily="Montserrat-Regular" 
+                                                                FontSize="13"
+                                                                Command="{Binding ShowDoneTradesCommand}"/>
+                                                <buttons:SfChip Text=" Gain " 
+                                                                BackgroundColor="{StaticResource GridBackground}" 
+                                                                CornerRadius="20" FontFamily="Montserrat-Regular" 
+                                                                FontSize="13"
+                                                                Command="{Binding ShowGainTradesCommand}"/>
+                                                <buttons:SfChip Text=" Loss " 
+                                                                BackgroundColor="{StaticResource GridBackground}" 
+                                                                CornerRadius="20" FontFamily="Montserrat-Regular" 
+                                                                FontSize="13"
+                                                                Command="{Binding ShowLossTradesCommand}"/>
                                             </buttons:SfChipGroup.Items>
                                         </buttons:SfChipGroup>
                                     </ScrollView>
                                 </StackLayout>
-                        </CollectionView.Header>
+                            </CollectionView.Header>
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <SwipeView>
-                                        <SwipeView.LeftItems>
-                                            <SwipeItems Mode="Execute">
-                                                <SwipeItem 
-                                                    Text="Close Trade"
-                                                    BackgroundColor="{StaticResource GridBackground}"                                                    
-                                                    Command="{Binding LeftSwipeCommand}"/>                                                
-                                            </SwipeItems>
-                                        </SwipeView.LeftItems>
-                                        <Grid Padding="0" Margin="0">
+                                    <Grid Padding="0,0,0,0" Margin="0">
+                                        <SwipeView BackgroundColor="{StaticResource Background}">
+                                            <SwipeView.LeftItems>
+                                                <SwipeItems Mode="Execute">
+                                                    <SwipeItemView 
+                                                                   Command="{Binding BindingContext.LeftSwipeCommand, Source={x:Reference SavedTradeCollection}}"
+                                                                   CommandParameter="{Binding .}">
+                                                        <StackLayout BackgroundColor="{StaticResource Background}" Padding="10">
+                                                            <Label Text="Close Trade" 
+                                                                   FontFamily="Montserrat-Medium" 
+                                                                   Style="{StaticResource SimpleLabelStyle}"
+                                                                   FontSize="15"
+                                                                   Margin="0,25,0,0"/>
+                                                        </StackLayout>
+                                                    </SwipeItemView>
+                                                </SwipeItems>
+                                            </SwipeView.LeftItems>
+
+                                            <SwipeView.RightItems>
+                                                <SwipeItems Mode="Execute">
+                                                    <SwipeItemView 
+                                                                   Command="{Binding BindingContext.RightSwipeCommand, Source={x:Reference SavedTradeCollection}}"
+                                                                   CommandParameter="{Binding .}">
+                                                        <StackLayout BackgroundColor="{StaticResource Background}" Padding="10">
+                                                            <Label Text="Delete Trade" 
+                                                                   FontFamily="Montserrat-Medium" 
+                                                                   Style="{StaticResource SimpleLabelStyle}"
+                                                                   FontSize="15"
+                                                                   Margin="0,25,0,0"/>
+                                                        </StackLayout>
+                                                    </SwipeItemView>
+                                                </SwipeItems>
+                                            </SwipeView.RightItems>
+                                            
                                             <Frame
-                                            HeightRequest="55"
-                                            Margin="7,5,7,0"                                        
-                                            BackgroundColor="{StaticResource GridBackground}"
-                                            BorderColor="{StaticResource Background}"
-                                            CornerRadius="20"
-                                            HasShadow="True">
+                                                HeightRequest="55"
+                                                Margin="7,-5,7,10"                                        
+                                                BackgroundColor="{StaticResource GridBackground}"
+                                                BorderColor="{StaticResource Background}"
+                                                CornerRadius="20"
+                                                HasShadow="True">
 
                                                 <Grid
-                                            Margin="-9"
-                                            ColumnSpacing="0"
-                                            HorizontalOptions="FillAndExpand"
-                                            RowDefinitions="Auto, Auto, Auto, Auto, Auto"
-                                            ColumnDefinitions="Auto, *, *"
-                                            RowSpacing="0"
-                                            VerticalOptions="FillAndExpand">
+                                                    Margin="-9"
+                                                    ColumnSpacing="0"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                                                    ColumnDefinitions="Auto, *, *"
+                                                    RowSpacing="0"
+                                                    VerticalOptions="FillAndExpand">
 
                                                     <!--Icon Image-->
                                                     <Image
-                                                Margin="0,-2,0,0"
-                                                Aspect="AspectFit"
-                                                HeightRequest="35"
-                                                WidthRequest="35"
-                                                Source="TradeIcon.png"/>
+                                                        Margin="0,-2,0,0"
+                                                        Aspect="AspectFit"
+                                                        HeightRequest="35"
+                                                        WidthRequest="35"
+                                                        Source="TradeIcon.png"/>
 
                                                     <Label
-                                                Style="{StaticResource SimpleLabelStyle}"
-                                                Grid.Column="1"
-                                                FontSize="14"
-                                                Margin="4,0,0,0"
-                                                FontFamily="Montserrat-Bold"
-                                                Text="{Binding Name}" />
+                                                        Style="{StaticResource SimpleLabelStyle}"
+                                                        Grid.Column="1"
+                                                        FontSize="14"
+                                                        Margin="4,0,0,0"
+                                                        FontFamily="Montserrat-Bold"
+                                                        Text="{Binding Name}" />
 
                                                     <Label
-                                                Style="{StaticResource SimpleLabelStyle}"
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                FontSize="11"
-                                                Margin="-25,5,0,0"
-                                                Text="{Binding EntryDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
+                                                        Style="{StaticResource SimpleLabelStyle}"
+                                                        Grid.Row="2"
+                                                        Grid.Column="1"
+                                                        FontSize="11"
+                                                        Margin="-25,5,0,0"
+                                                        Text="{Binding EntryDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
 
                                                     <Label
-                                                Style="{StaticResource SimpleLabelStyle}"
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                FontSize="11"
-                                                Margin="-25,0,0,0"
-                                                Text="{Binding ExitDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
+                                                        Style="{StaticResource SimpleLabelStyle}"
+                                                        Grid.Row="3"
+                                                        Grid.Column="1"
+                                                        FontSize="11"
+                                                        Margin="-25,0,0,0"
+                                                        Text="{Binding ExitDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
 
                                                     <StackLayout
-                                                Orientation="Horizontal"
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                HorizontalOptions="Start"
-                                                VerticalOptions="Start"
-                                                Margin="0,0,0,0">
+                                                        Orientation="Horizontal"
+                                                        Grid.Row="2"
+                                                        Grid.Column="2"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Start"
+                                                        Margin="0,0,0,0">
 
                                                         <Label
-                                                    Style="{StaticResource SimpleLabelStyle}"
-                                                    TextColor="LimeGreen"
-                                                    Margin="-20,5,0,0"
-                                                    FontSize="12"
-                                                    FontFamily="Cambria"
-                                                    Text="{Binding TakeProfitPrice}" />
+                                                            Style="{StaticResource SimpleLabelStyle}"
+                                                            TextColor="LimeGreen"
+                                                            Margin="-20,5,0,0"
+                                                            FontSize="12"
+                                                            FontFamily="Cambria"
+                                                            Text="{Binding TakeProfitPrice}" />
 
                                                         <Label
-                                                    Style="{StaticResource SimpleLabelStyle}"
-                                                    Margin="-2,3,0,0"
-                                                    FontSize="12"
-                                                    FontFamily="Cambria"
-                                                    Text="/" />
+                                                            Style="{StaticResource SimpleLabelStyle}"
+                                                            Margin="-2,3,0,0"
+                                                            FontSize="12"
+                                                            FontFamily="Cambria"
+                                                            Text="/" />
 
                                                         <Label
-                                                    Style="{StaticResource SimpleLabelStyle}"
-                                                    TextColor="Red"
-                                                    Margin="-2,5,0,0"
-                                                    FontSize="12"
-                                                    FontFamily="Cambria"
-                                                    Text="{Binding StopLossPrice}" />
+                                                            Style="{StaticResource SimpleLabelStyle}"
+                                                            TextColor="Red"
+                                                            Margin="-2,5,0,0"
+                                                            FontSize="12"
+                                                            FontFamily="Cambria"
+                                                            Text="{Binding StopLossPrice}" />
                                                     </StackLayout>
 
                                                     <Label
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Style="{StaticResource SimpleLabelStyle}"
-                                                TextColor="{StaticResource Gray-700}"
-                                                Margin="-20,1,0,0"
-                                                FontSize="12"
-                                                FontFamily="Cambria"
-                                                Text="{Binding StopLossPrice}" />
+                                                        Grid.Row="3"
+                                                        Grid.Column="2"
+                                                        Style="{StaticResource SimpleLabelStyle}"
+                                                        TextColor="{StaticResource Gray-700}"
+                                                        Margin="-20,1,0,0"
+                                                        FontSize="12"
+                                                        FontFamily="Cambria"
+                                                        Text="{Binding EntryPrice}" />
 
                                                     <Label
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                HorizontalOptions="End"
-                                                Style="{StaticResource SimpleLabelStyle}"
-                                                Margin="0,-5,7,0"
-                                                FontSize="13"
-                                                Text="{Binding Percentage, StringFormat='{0:} %', Converter={StaticResource statusToColor}}" />
+                                                        Grid.Row="0"
+                                                        Grid.Column="2"
+                                                        HorizontalOptions="End"
+                                                        Style="{StaticResource SimpleLabelStyle}"
+                                                        Margin="0,-5,7,0"
+                                                        FontSize="13"
+                                                        TextColor="{Binding Status, Converter={StaticResource statusToColor}}"
+                                                        Text="{Binding Percentage, StringFormat='{0:} %'}" />
 
                                                 </Grid>
                                             </Frame>
-                                        </Grid>
-                                    </SwipeView>
+                                        </SwipeView>
+                                    </Grid>
+                                   
                                 </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    </Grid>
+                    
                 </shimmer:SfShimmer.Content>
             </shimmer:SfShimmer>
+            </Grid>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

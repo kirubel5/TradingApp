@@ -11,8 +11,8 @@ namespace TradingApp
 
         public App()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjE2MjM3QDMyMzAyZTMxMmUzMFZWVEI2TFhmemxZSWVJVVphTExLQ1B5a1VHdngvY0ljcmtaMmZxa2ZPQjQ9");
-
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Njk2NzMyQDMyMzAyZTMyMmUzMEQxN0EybTc4VTJxSEt0Ylo3M1hjODZEVE1pZU5yWkY5RjhRY3B4TWFVZEU9");
+           
             InitializeComponent();
 
             MainPage = new AppShell();
@@ -21,7 +21,7 @@ namespace TradingApp
         protected async override void OnStart()
         {
             base.OnStart();
-            await Shell.Current.GoToAsync("//TradePage");
+            await Shell.Current.GoToAsync("//TrackPage");
         }
 
         protected override void OnSleep()
