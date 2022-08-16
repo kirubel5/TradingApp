@@ -23,8 +23,9 @@
         <ScrollView BackgroundColor="{StaticResource Background}">
             
             <Grid RowDefinitions="auto, *, auto" 
-                  BackgroundColor="{StaticResource Background}" 
-                  RowSpacing="0" Margin="0,0,0,0">
+                  BackgroundColor="Transparent" 
+                  RowSpacing="0" 
+                  Margin="0,0,0,0">
 
                 <!--Navigation bar-->
                 <Frame                      

@@ -2,7 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradingApp.Views.AddNewTradePage"
-             xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms">
+             xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms" 
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <viewmodels:AddNewTradeViewModel/>
@@ -24,20 +28,21 @@
 
                     <Grid ColumnDefinitions="*, auto">
                         <Label 
+                            Grid.Column="1"
                             Text="Add Trade"
                             Style="{StaticResource SimpleLabelStyle}"
-                            Margin="10,-13,0,-10"
+                            Margin="10,-13,60,-10"
                             FontFamily="Montserrat-Regular"
-                            FontSize="25"/>
+                            FontSize="22"/>
 
                         <buttons:SfButton
-                            Grid.Column="1"
-                            HorizontalOptions="EndAndExpand"
+                            Grid.Column="0"
+                            HorizontalOptions="Start"
                             HeightRequest="30"
                             WidthRequest="95"
-                            Text="Add"
+                            Text="Back"
                             BackgroundColor="{StaticResource Background}"
-                            Margin="10,-13,-13,-13"
+                            Margin="-10,-13,-13,-13"
                             CornerRadius="19"
                             FontFamily="Montserrat-Medium"
                             FontSize="14"
@@ -45,9 +50,67 @@
                             Command="{Binding BackCommand}"/>
                     </Grid>
                 </Frame>
-                
-                
 
+                <StackLayout Grid.Row="1" Margin="0,20,0,0">
+                    
+                    <inputLayout:SfTextInputLayout
+                        Style="{StaticResource BasicTextEntry}"
+                        Hint="Name">
+                        <Entry 
+                            x:Name="EntryName"
+                            Text="{Binding Name, Mode=TwoWay}"
+                            TextColor="{StaticResource Gray-800}"/>
+                    </inputLayout:SfTextInputLayout>
+                    
+                    <inputLayout:SfTextInputLayout
+                        Style="{StaticResource BasicTextEntry}"
+                        Hint="Entry Price">
+                        <Entry 
+                            x:Name="EntryEntryPrice"
+                            Text="{Binding EntryPrice, Mode=TwoWay}"
+                            TextColor="{StaticResource Gray-800}"
+                            Keyboard="Numeric"/>
+                    </inputLayout:SfTextInputLayout>
+
+                    <inputLayout:SfTextInputLayout
+                        Style="{StaticResource BasicTextEntry}"
+                        Hint="Take Profit">
+                        <Entry 
+                            Text="{Binding TakeProfitePrice, Mode=TwoWay}"
+                            TextColor="{StaticResource Gray-800}"
+                            Keyboard="Numeric"/>
+                    </inputLayout:SfTextInputLayout>
+
+                    <inputLayout:SfTextInputLayout
+                        Style="{StaticResource BasicTextEntry}"
+                        Hint="Stop Loss">
+                        <Entry 
+                            Text="{Binding StopLossPrice, Mode=TwoWay}"
+                            TextColor="{StaticResource Gray-800}"
+                            Keyboard="Numeric"/>
+                    </inputLayout:SfTextInputLayout>
+
+                    <Label
+                        IsVisible="{Binding MessageIsVisible}"
+                        TextColor="Red"
+                        Text="{Binding Message}"
+                        HorizontalOptions="Center"
+                        FontSize="12"
+                        FontFamily="Montserrat-Regular"
+                        Margin="0,-10,0,10"/>
+
+                    <buttons:SfButton
+                        HorizontalOptions="CenterAndExpand"
+                        HeightRequest="45"
+                        WidthRequest="270"
+                        Text="Save"
+                        BackgroundColor="{StaticResource GridBackground}"
+                        CornerRadius="25"
+                        FontFamily="Montserrat-Medium"
+                        FontSize="18"
+                        TextColor="{StaticResource Gray-800}"
+                        Command="{Binding SaveCommand}"/>
+                </StackLayout>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

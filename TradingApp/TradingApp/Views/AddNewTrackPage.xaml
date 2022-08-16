@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
-             x:Class="TradingApp.Views.AddNewTrackPage">
+             x:Class="TradingApp.Views.AddNewTrackPage"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
     
     <ContentPage.BindingContext>
         <viewmodels:AddNewTrackViewModel/>
@@ -25,20 +28,21 @@
 
                     <Grid ColumnDefinitions="*, auto">
                         <Label 
+                            Grid.Column="1"
                             Text="Add Track"
                             Style="{StaticResource SimpleLabelStyle}"
-                            Margin="10,-13,0,-10"
+                            Margin="10,-13,60,-10"
                             FontFamily="Montserrat-Regular"
-                            FontSize="25"/>
+                            FontSize="22"/>
 
                         <buttons:SfButton
-                            Grid.Column="1"
-                            HorizontalOptions="EndAndExpand"
+                            Grid.Column="0"
+                            HorizontalOptions="Start"
                             HeightRequest="30"
                             WidthRequest="95"
-                            Text="Add"
+                            Text="Back"
                             BackgroundColor="{StaticResource Background}"
-                            Margin="10,-13,-13,-13"
+                            Margin="-10,-13,-13,-13"
                             CornerRadius="19"
                             FontFamily="Montserrat-Medium"
                             FontSize="14"
@@ -47,8 +51,39 @@
                     </Grid>
                 </Frame>
 
+                <StackLayout Grid.Row="1" Margin="0,40,0,0">
 
+                    <inputLayout:SfTextInputLayout
+                        Style="{StaticResource BasicTextEntry}"
+                        Hint="Name">
+                        <Entry 
+                            x:Name="EntryName"
+                            Text="{Binding Name, Mode=TwoWay}"
+                            TextColor="{StaticResource Gray-800}"/>
+                    </inputLayout:SfTextInputLayout>
+                    
+                    <Label
+                        IsVisible="{Binding MessageIsVisible}"
+                        TextColor="Red"
+                        Text="{Binding Message}"
+                        HorizontalOptions="Start"
+                        FontSize="12"
+                        FontFamily="Montserrat-Regular"
+                        Margin="30,-5,0,10"/>
 
+                    <buttons:SfButton
+                        Margin="0,30,0,0"
+                        HorizontalOptions="CenterAndExpand"
+                        HeightRequest="45"
+                        WidthRequest="270"
+                        Text="Save"
+                        BackgroundColor="{StaticResource GridBackground}"
+                        CornerRadius="25"
+                        FontFamily="Montserrat-Medium"
+                        FontSize="18"
+                        TextColor="{StaticResource Gray-800}"
+                        Command="{Binding SaveCommand}"/>
+                </StackLayout>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

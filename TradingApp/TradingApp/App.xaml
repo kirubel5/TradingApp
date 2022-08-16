@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
              x:Class="TradingApp.App">
    
     <Application.Resources>
@@ -35,7 +36,19 @@
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="FontFamily" Value="Montserrat-Regular" />
             </Style>
-
+            
+            <Style x:Key="BasicTextEntry" TargetType="inputLayout:SfTextInputLayout">
+                <Setter Property="ContainerType" Value="Outlined"/>
+                <Setter Property="FocusedColor" Value="{StaticResource Gray-800}"/>
+                <Setter Property="UnfocusedColor" Value="{StaticResource Gray-700}"/>
+                <Setter Property="ErrorColor" Value="Red"/>
+                <Setter Property="Margin" Value="20,0,20,0"/>
+                <Setter Property="HintLabelStyle">
+                    <Setter.Value>
+                        <inputLayout:LabelStyle FontSize="15" FontFamily="Montserrat-Regular"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>        
     </Application.Resources>
 </Application>
