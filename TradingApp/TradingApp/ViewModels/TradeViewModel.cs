@@ -77,6 +77,8 @@ namespace TradingApp.ViewModels
 
             savedTrades = new MockData().Trades;
             SavedTrades.AddRange(savedTrades);
+
+
         }        
 
         private async Task OnTrackButtonClicked()

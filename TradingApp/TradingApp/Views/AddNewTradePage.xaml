@@ -76,7 +76,7 @@
                         Style="{StaticResource BasicTextEntry}"
                         Hint="Take Profit">
                         <Entry 
-                            Text="{Binding TakeProfitePrice, Mode=TwoWay}"
+                            Text="{Binding TakeProfitPrice, Mode=TwoWay}"
                             TextColor="{StaticResource Gray-800}"
                             Keyboard="Numeric"/>
                     </inputLayout:SfTextInputLayout>
