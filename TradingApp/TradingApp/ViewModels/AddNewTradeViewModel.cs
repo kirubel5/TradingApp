@@ -1,5 +1,6 @@
 ﻿
 using MvvmHelpers.Commands;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TradingApp.Models;
@@ -112,8 +113,10 @@ namespace TradingApp.ViewModels
             {
                 Name = Name,
                 EntryPrice = EntryPrice,
+                Status = "In Progress",
                 TakeProfitPrice = TakeProfitPrice,
-                StopLossPrice = StopLossPrice
+                StopLossPrice = StopLossPrice,
+                EntryDate = DateTime.Now
             };
 
             IsBusy = true;

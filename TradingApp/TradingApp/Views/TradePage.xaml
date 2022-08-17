@@ -210,7 +210,7 @@
                                             <SwipeView.LeftItems>
                                                 <SwipeItems Mode="Execute">
                                                     <SwipeItemView 
-                                                                   Command="{Binding BindingContext.LeftSwipeCommand, Source={x:Reference SavedTradeCollection}}"
+                                                                   Command="{Binding BindingContext.RightSwipeCommand, Source={x:Reference SavedTradeCollection}}"
                                                                    CommandParameter="{Binding .}">
                                                         <StackLayout BackgroundColor="{StaticResource Background}" Padding="10">
                                                             <Label Text="Close Trade" 
@@ -226,7 +226,7 @@
                                             <SwipeView.RightItems>
                                                 <SwipeItems Mode="Execute">
                                                     <SwipeItemView 
-                                                                   Command="{Binding BindingContext.RightSwipeCommand, Source={x:Reference SavedTradeCollection}}"
+                                                                   Command="{Binding BindingContext.LeftSwipeCommand, Source={x:Reference SavedTradeCollection}}"
                                                                    CommandParameter="{Binding .}">
                                                         <StackLayout BackgroundColor="{StaticResource Background}" Padding="10">
                                                             <Label Text="Delete Trade" 
