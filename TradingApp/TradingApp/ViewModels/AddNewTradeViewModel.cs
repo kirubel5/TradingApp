@@ -75,6 +75,8 @@ namespace TradingApp.ViewModels
         {
             MessageIsVisible = false;
 
+            #region Input validation
+
             if (string.IsNullOrWhiteSpace(Name))
             {
                 Message = "Name cannot be empty.";
@@ -101,7 +103,8 @@ namespace TradingApp.ViewModels
                 Message = "Take Profit Price cannot be empty or zero.";
                 MessageIsVisible = true;
                 return;
-            }
+            } 
+            #endregion
 
             MessageIsVisible = false;
 
@@ -114,14 +117,19 @@ namespace TradingApp.ViewModels
             };
 
             IsBusy = true;
-            //save to database. instead of talking to the database directly, talk to a class
-            //that talks to the database class
-            await _dataService.CreateAsync(model);
 
-
-            IsBusy = false;
-
-            Name = "";
+            if (await _dataService.CreateAsync(model))
+            {
+                DependencyService.Get<IToast>()?.MakeToast("Saved Successfully");
+                IsBusy = false;
+                Name = "";
+            }
+            else
+            {
+                DependencyService.Get<IToast>()?.MakeToast("Something went wrong, please try again.");
+                IsBusy = false;
+                return;
+            }
         }
 
         private async Task OnBackButtonClicked()
