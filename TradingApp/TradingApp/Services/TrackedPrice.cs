@@ -6,6 +6,6 @@ namespace TradingApp.Services
 {
     public static class TrackedPrice
     {
-        public static Dictionary<string, double> TrackedPrices { get; set; }
+        public static Dictionary<string, double> TrackedPrices { get; set; } = new Dictionary<string, double>();
     }
 }

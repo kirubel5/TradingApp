@@ -27,6 +27,7 @@ namespace TradingApp.Views
             base.OnAppearing();
 
             await tradeViewModel.Load();
+            tradeViewModel.OnShowInProgress();
         }
     }
 }

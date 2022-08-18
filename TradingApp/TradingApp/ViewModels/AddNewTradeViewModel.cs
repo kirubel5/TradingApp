@@ -18,6 +18,7 @@ namespace TradingApp.ViewModels
         private double entryPrice;
         private double takeProfitPrice;
         private double stopLossPrice;
+        private double amount;
 
         private readonly IDataService _dataService;
         #endregion
@@ -62,6 +63,11 @@ namespace TradingApp.ViewModels
             get => stopLossPrice;
             set => SetProperty(ref stopLossPrice, value);
         }
+        public double Amount
+        {
+            get => amount;
+            set => SetProperty(ref amount, value);
+        }
 
         #endregion
 
@@ -104,7 +110,14 @@ namespace TradingApp.ViewModels
                 Message = "Take Profit Price cannot be empty or zero.";
                 MessageIsVisible = true;
                 return;
-            } 
+            }
+
+            if (string.IsNullOrWhiteSpace(Amount.ToString()) || Amount == 0)
+            {
+                Message = "Amount cannot be empty or zero.";
+                MessageIsVisible = true;
+                return;
+            }
             #endregion
 
             MessageIsVisible = false;
@@ -116,6 +129,7 @@ namespace TradingApp.ViewModels
                 Status = "In Progress",
                 TakeProfitPrice = TakeProfitPrice,
                 StopLossPrice = StopLossPrice,
+                Amount = Amount,
                 EntryDate = DateTime.Now
             };
 
@@ -126,10 +140,13 @@ namespace TradingApp.ViewModels
                 DependencyService.Get<IToast>()?.MakeToast("Saved Successfully");
                 IsBusy = false;
                 Name = "";
+                EntryPrice = 0;
+                TakeProfitPrice = 0;
+                StopLossPrice = 0;
+                Amount = 0;
             }
             else
             {
-                DependencyService.Get<IToast>()?.MakeToast("Something went wrong, please try again.");
                 IsBusy = false;
                 return;
             }

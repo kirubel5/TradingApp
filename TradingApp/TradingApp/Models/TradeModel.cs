@@ -13,6 +13,8 @@ namespace TradingApp.Models
         public double EntryPrice { get; set; }
         public double StopLossPrice { get; set; }
         public double TakeProfitPrice { get; set; }
+        public double Amount { get; set; }
+        public double NetChange { get; set; }
         public string Status { get; set; } = string.Empty;
         public double Percentage { get; set; }
         public DateTime EntryDate { get; set; }

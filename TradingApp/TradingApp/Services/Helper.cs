@@ -26,6 +26,7 @@ namespace TradingApp.Services
             double val2 = val1 / tradeModel.EntryPrice;
             double val3 = val2 * 100;
 
+            tradeModel.NetChange = model.Amount * val2;
             tradeModel.Percentage = val3;
             tradeModel.ExitDate = DateTime.Now;
 
@@ -43,10 +44,12 @@ namespace TradingApp.Services
                     if(TrackedPrice.TrackedPrices.ContainsKey(item.Name))
                     {
                         item.Percentage = ((item.EntryPrice - TrackedPrice.TrackedPrices[item.Name]) / item.EntryPrice) * 100;
+                        item.NetChange = ((item.EntryPrice - TrackedPrice.TrackedPrices[item.Name]) / item.EntryPrice) * item.Amount;
                     }
                     else
                     {
                         item.Percentage = 0;
+                        item.NetChange = 0;
                     }
 
                     item.ExitDate = DateTime.MaxValue;

@@ -20,6 +20,7 @@ namespace TradingApp.ViewModels
         private bool shimmerIsActive;
         private string imageName;
         private string message;
+        private bool isRefreshing;
 
         private IEnumerable<TradeModel> savedTrades;
         public ObservableRangeCollection<TradeModel> SavedTrades { get; set; }
@@ -38,6 +39,7 @@ namespace TradingApp.ViewModels
 
             TrackCommand = new AsyncCommand(OnTrackButtonClicked);
             AddCommand = new AsyncCommand(OnAddButtonClicked);
+            RefreshCommand = new AsyncCommand(OnRefresh);
             LeftSwipeCommand = new AsyncCommand<object>(OnLeftSwipe);
             RightSwipeCommand = new AsyncCommand<object>(OnRightSwipe);
             ShowAllTradesCommand = new Command(OnShowAll);
@@ -63,6 +65,11 @@ namespace TradingApp.ViewModels
             get => shimmerIsActive;
             set => SetProperty(ref shimmerIsActive, value);
         }
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set => SetProperty(ref isRefreshing, value);
+        }
 
         #endregion
 
@@ -76,6 +83,7 @@ namespace TradingApp.ViewModels
         public ICommand RightSwipeCommand { get; }
         public ICommand TrackCommand { get; }
         public ICommand AddCommand { get; }
+        public ICommand RefreshCommand { get; }
         #endregion
 
         #region Methods    
@@ -109,14 +117,21 @@ namespace TradingApp.ViewModels
 
                 SavedTrades?.AddRange(savedTrades);
             }
-            catch (Exception)
+            catch (Exception) 
             {
                 ShimmerIsActive = false;
                 Message = "Error has occured, please try reloading the page.";
                 ImageName = "SomethingWentWrong.png";
                 return;
             }
-        }        
+        }
+
+        private async Task OnRefresh()
+        {
+            IsRefreshing = true;
+            await this.Load();
+            IsRefreshing = false;
+        }
 
         private async Task OnTrackButtonClicked()
         {
@@ -210,6 +225,13 @@ namespace TradingApp.ViewModels
             {
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades);
+
+                if (SavedTrades is null || SavedTrades.Count == 0)
+                {
+                    Message = "No Saved Trades.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
             }
             catch (Exception)
             {
@@ -225,6 +247,13 @@ namespace TradingApp.ViewModels
             {
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades.Where(x => x.Status == "Gain" || x.Status == "Loss").ToList());
+
+                if (SavedTrades is null || SavedTrades.Count == 0)
+                {
+                    Message = "No Done Trades.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
             }
             catch (Exception)
             {
@@ -234,12 +263,19 @@ namespace TradingApp.ViewModels
             }
         }
 
-        private void OnShowInProgress()
+        public void OnShowInProgress()
         {
             try
             {
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades.Where(x => x.Status == "In Progress").ToList());
+
+                if (SavedTrades is null || SavedTrades.Count == 0)
+                {
+                    Message = "No In progress Trades.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
             }
             catch (Exception)
             {
@@ -255,6 +291,13 @@ namespace TradingApp.ViewModels
             {
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades.Where(x => x.Status == "Gain").ToList());
+
+                if (SavedTrades is null || SavedTrades.Count == 0)
+                {
+                    Message = "No Gain Trades.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
             }
             catch (Exception)
             {
@@ -270,6 +313,13 @@ namespace TradingApp.ViewModels
             {
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades.Where(x => x.Status == "Loss").ToList());
+
+                if(SavedTrades is null || SavedTrades.Count == 0)
+                {
+                    Message = "No Loss Trades.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
             }
             catch (Exception)
             {

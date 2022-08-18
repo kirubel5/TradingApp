@@ -13,7 +13,7 @@ namespace TradingApp.Converters
             if (value is null)
                 return "#FF0000";
 
-            if ((string)value == "InProgress" || (string)value == "inProgress")
+            if ((string)value == "In Progress" || (string)value == "in Progress")
                 return "#F5DEB3";
             else if ((string)value == "Gain" || (string)value == "gain")
                 return "#32CD32";
