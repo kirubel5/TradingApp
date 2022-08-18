@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TradingApp.Models;
 
@@ -36,6 +37,7 @@ namespace TradingApp.Services
         public static List<TradeModel> FormatLoadedTrades(List<TradeModel> data)
         {
             List<TradeModel> model = new List<TradeModel>();
+            List<TradeModel> res = new List<TradeModel>();
 
             foreach (var item in data)
             {
@@ -58,7 +60,9 @@ namespace TradingApp.Services
                 model.Add(item);
             }
 
-            return model;
+            res.AddRange(model.OrderByDescending(x => x.EntryDate));
+
+            return res;
         }
     }
 }

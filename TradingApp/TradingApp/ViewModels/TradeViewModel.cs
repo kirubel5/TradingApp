@@ -226,7 +226,7 @@ namespace TradingApp.ViewModels
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades);
 
-                if (SavedTrades is null || SavedTrades.Count == 0)
+                if (savedTrades is null || SavedTrades.Count == 0)
                 {
                     Message = "No Saved Trades.";
                     ImageName = "NoItem.png";
@@ -246,7 +246,9 @@ namespace TradingApp.ViewModels
             try
             {
                 SavedTrades?.Clear();
-                SavedTrades.AddRange(savedTrades.Where(x => x.Status == "Gain" || x.Status == "Loss").ToList());
+                SavedTrades.AddRange(savedTrades
+                    .Where(x => x.Status == "Gain" || x.Status == "Loss")
+                    .ToList());
 
                 if (SavedTrades is null || SavedTrades.Count == 0)
                 {
