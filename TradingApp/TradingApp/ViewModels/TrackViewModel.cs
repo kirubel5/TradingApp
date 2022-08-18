@@ -17,9 +17,12 @@ namespace TradingApp.ViewModels
         #region Fields
         private string imageName;
         private string message;
+        private bool shimmerIsActive;
+        private bool isRefreshing;
 
         private IEnumerable<TrackModel> trackedTrades;
         public ObservableRangeCollection<TrackModel> TrackedTrades { get; set; }
+        private readonly IDataService _dataService;
         #endregion
 
         public TrackViewModel()
@@ -29,6 +32,7 @@ namespace TradingApp.ViewModels
 
             AddCommand = new AsyncCommand(OnAddButtonClicked);
             TradeCommand = new AsyncCommand(OnTradeButtonClicked);
+            RefreshCommand = new AsyncCommand(OnRefresh);
             RightSwipeCommand = new AsyncCommand<object>(OnRightSwipe);
         }
 
@@ -43,6 +47,16 @@ namespace TradingApp.ViewModels
             get => message;
             set => SetProperty(ref message, value);
         }
+        public bool ShimmerIsActive
+        {
+            get => shimmerIsActive;
+            set => SetProperty(ref shimmerIsActive, value);
+        }
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set => SetProperty(ref isRefreshing, value);
+        }
         #endregion
 
         #region Commands
@@ -50,15 +64,54 @@ namespace TradingApp.ViewModels
         public ICommand AddCommand { get; }
         public ICommand TradeCommand { get; }
         public ICommand RightSwipeCommand { get; }
+        public ICommand RefreshCommand { get; }
         #endregion
 
         #region Methods
         public async Task Load()
         {
+            ShimmerIsActive = true;
             TrackedTrades?.Clear();
 
-            trackedTrades = new MockData().Tracks;
-            TrackedTrades.AddRange(trackedTrades);
+            try
+            {
+                var (res, data) = await _dataService.GetSavedTracksAsync();
+
+                if (!res)
+                {
+                    ShimmerIsActive = false;
+                    Message = "Error has occured, please try reloading the page.";
+                    ImageName = "SomethingWentWrong.png";
+                    return;
+                }
+
+                if (data is null || data.Count == 0)
+                {
+                    ShimmerIsActive = false;
+                    Message = "No Saved Trades.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
+
+                ShimmerIsActive = false;
+                trackedTrades = Helper.LoadTrackInformation(data);
+
+                TrackedTrades?.AddRange(trackedTrades);
+            }
+            catch (Exception)
+            {
+                ShimmerIsActive = false;
+                Message = "Error has occured, please try reloading the page.";
+                ImageName = "SomethingWentWrong.png";
+                return;
+            }
+        }
+
+        public async Task OnRefresh()
+        {
+            IsRefreshing = true;
+            await this.Load();
+            IsRefreshing = false;
         }
 
         private async Task OnAddButtonClicked()
@@ -82,6 +135,28 @@ namespace TradingApp.ViewModels
             {
                 // Dont do any thing, just move on
             }
+
+            var val = obj as TrackModel;
+
+            bool res = await Shell.Current.DisplayAlert("Stop Tracking", $"Are you sure you want to stop " +
+                $"tracking: {val.Name}?", "Ok", "Cancel");
+
+            if (!res)
+                return;
+
+            try
+            {
+                await _dataService.DeleteAsync(val);
+            }
+            catch (Exception)
+            {
+                DependencyService.Get<IToast>()?.MakeToast("Something went wrong. Please try agian.");
+                return;
+            }
+
+            DependencyService.Get<IToast>()?.MakeToast("Track Stopped Successfully.");
+
+            await this.Load();
         }
         #endregion
     }

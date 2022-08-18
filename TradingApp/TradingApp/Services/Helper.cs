@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TradingApp.Models;
 
 namespace TradingApp.Services
@@ -63,6 +64,17 @@ namespace TradingApp.Services
             res.AddRange(model.OrderByDescending(x => x.EntryDate));
 
             return res;
+        }
+
+        public static async Task<List<TrackModel>> LoadTrackInformation(List<TrackModel> data)
+        {
+            List<TradeModel> model = new List<TradeModel>();
+            List<TradeModel> res = new List<TradeModel>();
+
+            foreach (var item in data)
+            {
+
+            }
         }
     }
 }

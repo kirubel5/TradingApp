@@ -374,10 +374,10 @@
                                                             Grid.Column="2"
                                                             HorizontalOptions="End"
                                                             Style="{StaticResource SimpleLabelStyle}"
-                                                            Margin="0,10,13,0"
+                                                            Margin="0,10,10,0"
                                                             FontSize="11"
                                                             TextColor="{Binding Status, Converter={StaticResource statusToColor}}"
-                                                            Text="{Binding NetChange, StringFormat='{0:F2}'}" />
+                                                            Text="{Binding NetChange, StringFormat='${0:F2}'}" />
                                                     </Grid>
                                                 </Frame>
                                             </SwipeView>

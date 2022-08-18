@@ -20,7 +20,7 @@ namespace TradingApp.ViewModels
         private bool shimmerIsActive;
         private string imageName;
         private string message;
-        private bool isRefreshing;
+        private bool isRefreshing; 
 
         private IEnumerable<TradeModel> savedTrades;
         public ObservableRangeCollection<TradeModel> SavedTrades { get; set; }
