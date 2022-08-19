@@ -46,8 +46,8 @@ namespace TradingApp.Services
                 {
                     if(TrackedPrice.TrackedPrices.ContainsKey(item.Name))
                     {
-                        item.Percentage = ((item.EntryPrice - TrackedPrice.TrackedPrices[item.Name]) / item.EntryPrice) * 100;
-                        item.NetChange = ((item.EntryPrice - TrackedPrice.TrackedPrices[item.Name]) / item.EntryPrice) * item.Amount;
+                        item.Percentage = ((TrackedPrice.TrackedPrices[item.Name] - item.EntryPrice) / item.EntryPrice) * 100;
+                        item.NetChange = ((TrackedPrice.TrackedPrices[item.Name] - item.EntryPrice ) / item.EntryPrice) * item.Amount;
                     }
                     else
                     {
@@ -69,6 +69,7 @@ namespace TradingApp.Services
         public static async Task<List<TrackModel>> LoadTrackInformation(List<TrackModel> data)
         {
             List<TrackModel> model = new List<TrackModel>();
+            TrackedPrice.TrackedPrices.Clear();
 
             foreach (var item in data)
             {
@@ -81,6 +82,8 @@ namespace TradingApp.Services
                     Low = double.Parse(result.low_24h),
                     Percentage = double.Parse(result.change_percentage)
                 };
+               
+                TrackedPrice.TrackedPrices.Add(item.Name, resModel.CurrentPrice);
 
                 model.Add(resModel);
             }

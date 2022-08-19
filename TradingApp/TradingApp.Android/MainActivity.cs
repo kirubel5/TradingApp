@@ -7,7 +7,10 @@ using Android.OS;
 using Android.Widget;
 using Xamarin.Essentials;
 using TradingApp.Services;
+using Xamarin.Forms;
+using TradingApp.Droid;
 
+[assembly: Dependency(typeof(Toaster))]
 namespace TradingApp.Droid
 {
     [Activity(Label = "TradingApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]

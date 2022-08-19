@@ -27,6 +27,8 @@ namespace TradingApp.ViewModels
 
         public TrackViewModel()
         {
+            _dataService = new DataService();
+
             trackedTrades = new ObservableRangeCollection<TrackModel>();
             TrackedTrades = new ObservableRangeCollection<TrackModel>();
 
@@ -75,29 +77,31 @@ namespace TradingApp.ViewModels
 
             try
             {
-                //var (res, data) = await _dataService.GetSavedTracksAsync();
+                if (Connectivity.NetworkAccess == NetworkAccess.None)
+                {
+                    ShimmerIsActive = false;
+                    Message = "No internet, please check your connection";
+                    ImageName = "NoInternet.png";
+                    return;
+                }
 
-                //if (!res)
-                //{
-                //    ShimmerIsActive = false;
-                //    Message = "Error has occured, please try reloading the page.";
-                //    ImageName = "SomethingWentWrong.png";
-                //    return;
-                //}
+                var (res, data) = await _dataService.GetSavedTracksAsync();
 
-                //if (data is null || data.Count == 0)
-                //{
-                //    ShimmerIsActive = false;
-                //    Message = "No Saved Trades.";
-                //    ImageName = "NoItem.png";
-                //    return;
-                //}
+                if (!res)
+                {
+                    ShimmerIsActive = false;
+                    Message = "Error has occured, please try reloading the page.";
+                    ImageName = "SomethingWentWrong.png";
+                    return;
+                }
 
-                List<TrackModel> data = new List<TrackModel>();
-                TrackModel model = new TrackModel { Name = "TONCOIN_UT" };
-                data.Add(model);
-                TrackModel model1 = new TrackModel { Name = "BTC_UT" };
-                data.Add(model1);
+                if (data is null || data.Count == 0)
+                {
+                    ShimmerIsActive = false;
+                    Message = "No Saved Trackes.";
+                    ImageName = "NoItem.png";
+                    return;
+                }
 
                 ShimmerIsActive = false;
                 trackedTrades = await Helper.LoadTrackInformation(data);

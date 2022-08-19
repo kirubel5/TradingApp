@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TradingApp.Models;
 using TradingApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,12 +17,16 @@ namespace TradingApp.ViewModels
         private string message;
         private string name;
         private bool messageIsVisible;
+
+        private readonly IDataService _dataService;
         #endregion
 
         public AddNewTrackViewModel()
         {
+            _dataService = new DataService();
+
             BackCommand = new AsyncCommand(OnBackButtonClicked);
-            SavedCommand = new AsyncCommand(OnSaveButtonClicked);
+            SaveCommand = new AsyncCommand(OnSaveButtonClicked);
         }
 
         #region Properties
@@ -44,7 +49,7 @@ namespace TradingApp.ViewModels
 
         #region Commands
         public ICommand BackCommand { get; }
-        public ICommand SavedCommand { get; }
+        public ICommand SaveCommand { get; }
         #endregion
 
         #region Methods
@@ -74,18 +79,43 @@ namespace TradingApp.ViewModels
                     return;
                 }
 
+                Message = "Checking quote, please wait. Don't click the save button again.";
+                MessageIsVisible = true;
                 bool res = await Helper.CheckQuote(Name);
 
-                if(!res)
+                if (!res)
                 {
                     Message = "The currency pair you entered could not be found on gate.io";
                     MessageIsVisible = true;
                     return;
                 }
+
+                Message = "Quote found, saving to Database";
+
+                TrackModel model = new TrackModel 
+                { 
+                    Name = Name 
+                };
+
+                IsBusy = true;
+
+                if (await _dataService.CreateAsync(model))
+                {
+                    DependencyService.Get<IToast>()?.MakeToast("Saved Successfully");                    
+                    Name = "";
+                }
+                else
+                {
+                    DependencyService.Get<IToast>()?.MakeToast("Did not save to database. Please try again");
+                }
+
+                IsBusy = false;
+                MessageIsVisible = false;
             }
             catch (Exception)
             {
-                throw;
+                Message = "Something went wrong, please try again";
+                MessageIsVisible = true;
             }
         }
         #endregion
