@@ -68,13 +68,50 @@ namespace TradingApp.Services
 
         public static async Task<List<TrackModel>> LoadTrackInformation(List<TrackModel> data)
         {
-            List<TradeModel> model = new List<TradeModel>();
-            List<TradeModel> res = new List<TradeModel>();
+            List<TrackModel> model = new List<TrackModel>();
 
             foreach (var item in data)
             {
+                var (_, result) = await new Endpoints().GetQuote(item.Name);
+                TrackModel resModel = new TrackModel
+                {
+                    Name = item.Name,
+                    CurrentPrice = double.Parse(result.last),
+                    High = double.Parse(result.high_24h),
+                    Low = double.Parse(result.low_24h),
+                    Percentage = double.Parse(result.change_percentage)
+                };
 
+                model.Add(resModel);
             }
+
+            return FormatLoadedTracks(model);
+        }
+
+        private static List<TrackModel> FormatLoadedTracks(List<TrackModel> data)
+        {
+            foreach (var item in data)
+            {
+                if (item.Percentage < 0)
+                {
+                    item.Status = "Loss";
+                    item.Percentage = -1 * item.Percentage;
+                }                    
+                else
+                    item.Status = "Gain";
+            }
+
+            return data;
+        }
+
+        public static async Task<bool> CheckQuote(string name)
+        {           
+            var (result, _) = await new Endpoints().GetQuote(name);
+
+            if (!result)
+                return false;
+            else
+                return true;           
         }
     }
 }

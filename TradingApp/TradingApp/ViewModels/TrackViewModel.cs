@@ -75,26 +75,32 @@ namespace TradingApp.ViewModels
 
             try
             {
-                var (res, data) = await _dataService.GetSavedTracksAsync();
+                //var (res, data) = await _dataService.GetSavedTracksAsync();
 
-                if (!res)
-                {
-                    ShimmerIsActive = false;
-                    Message = "Error has occured, please try reloading the page.";
-                    ImageName = "SomethingWentWrong.png";
-                    return;
-                }
+                //if (!res)
+                //{
+                //    ShimmerIsActive = false;
+                //    Message = "Error has occured, please try reloading the page.";
+                //    ImageName = "SomethingWentWrong.png";
+                //    return;
+                //}
 
-                if (data is null || data.Count == 0)
-                {
-                    ShimmerIsActive = false;
-                    Message = "No Saved Trades.";
-                    ImageName = "NoItem.png";
-                    return;
-                }
+                //if (data is null || data.Count == 0)
+                //{
+                //    ShimmerIsActive = false;
+                //    Message = "No Saved Trades.";
+                //    ImageName = "NoItem.png";
+                //    return;
+                //}
+
+                List<TrackModel> data = new List<TrackModel>();
+                TrackModel model = new TrackModel { Name = "TONCOIN_UT" };
+                data.Add(model);
+                TrackModel model1 = new TrackModel { Name = "BTC_UT" };
+                data.Add(model1);
 
                 ShimmerIsActive = false;
-                trackedTrades = Helper.LoadTrackInformation(data);
+                trackedTrades = await Helper.LoadTrackInformation(data);
 
                 TrackedTrades?.AddRange(trackedTrades);
             }

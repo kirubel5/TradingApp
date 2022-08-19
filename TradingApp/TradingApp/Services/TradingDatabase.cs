@@ -16,7 +16,7 @@ namespace TradingApp.Services
             database = new SQLiteAsyncConnection(dbPath);
 
             database.CreateTableAsync<TradeModel>().Wait();
-           // database.CreateTableAsync<TrackModel>().Wait();
+            database.CreateTableAsync<TrackModel>().Wait();
         }
 
         public Task<int> SaveTradeAsync(TradeModel model)
