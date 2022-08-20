@@ -98,6 +98,13 @@ namespace TradingApp.ViewModels
                 };
 
                 IsBusy = true;
+                 
+                if(await _dataService.ExistsAsync(model))
+                {
+                    Message = "Quote already exists in database";
+                    IsBusy = false;
+                    return;
+                }
 
                 if (await _dataService.CreateAsync(model))
                 {

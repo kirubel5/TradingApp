@@ -74,18 +74,22 @@ namespace TradingApp.Services
             foreach (var item in data)
             {
                 var (_, result) = await new Endpoints().GetQuote(item.Name);
-                TrackModel resModel = new TrackModel
-                {
-                    Name = item.Name,
-                    CurrentPrice = double.Parse(result.last),
-                    High = double.Parse(result.high_24h),
-                    Low = double.Parse(result.low_24h),
-                    Percentage = double.Parse(result.change_percentage)
-                };
                
-                TrackedPrice.TrackedPrices.Add(item.Name, resModel.CurrentPrice);
+                item.CurrentPrice = double.Parse(result.last);
+                item.High = double.Parse(result.high_24h);
+                item.Low = double.Parse(result.low_24h);
+                item.Percentage = double.Parse(result.change_percentage);
 
-                model.Add(resModel);
+                try
+                {
+                    TrackedPrice.TrackedPrices.Add(item.Name, item.CurrentPrice);
+                }
+                catch (Exception)
+                {
+                    //Dont do anything, just move on
+                }
+
+                model.Add(item);
             }
 
             return FormatLoadedTracks(model);

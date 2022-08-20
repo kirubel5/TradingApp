@@ -32,6 +32,40 @@ namespace TradingApp.Services
             return false;
         }
 
+        public async Task<bool> ExistsAsync(dynamic model)
+        {
+            try
+            {
+                if (model is TrackModel trackModel)
+                {
+                    var res = await App.Database.GetSavedTracksAsync();
+
+                    foreach (var item in res)
+                    {
+                        if (model.Name == item.Name)
+                            return true;
+                    }
+                }
+                else if (model is TradeModel tradeModel)
+                {
+                    var res = await App.Database.GetSavedTradesAsync();
+
+                    foreach (var item in res)
+                    {
+                        if (model.Name == item.Name)
+                            return true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //better to return true
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<(bool, List<TradeModel>)> GetSavedTradesAsync()
         {
             try
@@ -73,7 +107,7 @@ namespace TradingApp.Services
             }
             catch (Exception)
             {
-                return false;
+                return false; 
             }
 
             return false;

@@ -113,7 +113,7 @@
                     Grid.Row="3"
                     BackgroundColor="{StaticResource GridBackground}"
                     Margin="0,1,0,-10"
-                    HeightRequest="15"
+                    HeightRequest="22"
                     HasShadow="False"
                     CornerRadius="15">
 
@@ -141,14 +141,17 @@
                             BackgroundImage="Trade.png"
                             Margin="0,-15,0,-5"
                             Grid.Column="1"
+                            ImageAlignment="Top"
+                            VerticalTextAlignment="End"
                             HorizontalOptions="Center"
-                            HeightRequest="30"
-                            WidthRequest="60"
-                            BackgroundColor="{StaticResource GridBackground}"
-                            CornerRadius="19"
+                            HeightRequest="20"
+                            WidthRequest="50"
+                            BackgroundColor="{StaticResource Background}"
+                            CornerRadius="25"
                             FontFamily="Montserrat-Medium"
                             FontSize="14"
-                            TextColor="{StaticResource Gray-800}"/>
+                            TextColor="{StaticResource Gray-800}"
+                            />
                     </Grid>
                 </Frame>
                 

@@ -135,6 +135,13 @@ namespace TradingApp.ViewModels
 
                 IsBusy = true;
 
+                if (await _dataService.ExistsAsync(model))
+                {
+                    Message = "Quote already saved in database";
+                    IsBusy = false;
+                    return;
+                }
+
                 if (await _dataService.CreateAsync(model))
                 {
                     DependencyService.Get<IToast>()?.MakeToast("Saved Successfully");

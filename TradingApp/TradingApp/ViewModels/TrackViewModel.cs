@@ -156,17 +156,22 @@ namespace TradingApp.ViewModels
 
             try
             {
-                await _dataService.DeleteAsync(val);
+                if (await _dataService.DeleteAsync(val))
+                {
+                    DependencyService.Get<IToast>()?.MakeToast("Track Stopped Successfully");
+                    await this.Load();
+                }
+                else
+                {
+                    DependencyService.Get<IToast>()?.MakeToast("Something went wrong. Please try agian.");
+                    return;
+                }
             }
             catch (Exception)
             {
                 DependencyService.Get<IToast>()?.MakeToast("Something went wrong. Please try agian.");
                 return;
             }
-
-            DependencyService.Get<IToast>()?.MakeToast("Track Stopped Successfully.");
-
-            await this.Load();
         }
         #endregion
     }
