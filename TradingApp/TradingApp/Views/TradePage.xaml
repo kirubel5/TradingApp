@@ -158,7 +158,7 @@
                 <shimmer:SfShimmer 
                     Grid.Row="2"
                     x:Name="ShimmerView" 
-                    IsActive="{Binding ShimmerIsActive}" 
+                    IsActive="False" 
                     VerticalOptions="FillAndExpand" 
                     Type="Feed"                
                     Color="{StaticResource Gray-200}">
@@ -167,7 +167,7 @@
                         <RefreshView    
                             Grid.Row="1"
                             IsRefreshing="{Binding IsRefreshing}"
-                            Command="{Binding RefreshCommand}"
+                            Command="{Binding LoadCommand}"
                             BackgroundColor="Transparent"
                             RefreshColor="{StaticResource Gray-100}">
                             
@@ -212,6 +212,84 @@
                                         </StackLayout>
                                     </ContentView>
                                 </CollectionView.EmptyView>
+
+                                <CollectionView.FooterTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="0,7,0,-10" Margin="0" BackgroundColor="{StaticResource Background}">
+                                           
+                                            <Frame  HeightRequest="55"
+                                                    Margin="7,0,7,10"                                        
+                                                    BackgroundColor="{StaticResource GridBackground}"                                                    
+                                                    BorderColor="{StaticResource Background}"
+                                                    CornerRadius="20"
+                                                    HasShadow="True">
+
+                                                <Grid ColumnDefinitions="*,*,*"
+                                                      RowDefinitions="*,*,*,*,*">
+
+                                                    <!--Count-->
+                                                    <Label Text="Count"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    
+                                                    <Label Text="{Binding InProgressCount}"
+                                                           Grid.Row="1"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding GainCount}"
+                                                           Grid.Row="2"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding LossCount}"
+                                                           Grid.Row="3"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding TotalCount}"
+                                                           Grid.Row="3"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+
+                                                    <!--Amount-->
+                                                    <Label Text="Amount"
+                                                           Grid.Column="1"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="--"
+                                                           Grid.Row="1"
+                                                           Grid.Column="1"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding GainAmount}"
+                                                           Grid.Row="2"
+                                                           Grid.Column="1"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding LossAmount}"
+                                                           Grid.Row="3"
+                                                           Grid.Column="1"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding TotalAmount}"
+                                                           Grid.Row="3"
+                                                           Grid.Column="1"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    
+                                                    <!--Percent-->
+                                                    <Label Text="Percent"
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="--"
+                                                           Grid.Row="1"
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding GainPercent}"
+                                                           Grid.Row="2"
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding LossPercent}"
+                                                           Grid.Row="3"
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                    <Label Text="{Binding TotalPercent}"
+                                                           Grid.Row="3"
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource SimpleLabelStyle}"/>
+                                                </Grid>
+                                            </Frame>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.FooterTemplate>
                                 
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
@@ -253,11 +331,18 @@
                                                 <Frame
                                                     HeightRequest="55"
                                                     Margin="7,0,7,10"                                        
-                                                    BackgroundColor="{StaticResource GridBackground}"
+                                                    BackgroundColor="{StaticResource GridBackground}"                                                    
                                                     BorderColor="{StaticResource Background}"
                                                     CornerRadius="20"
                                                     HasShadow="True">
-
+                                                    
+                                                    <Frame.GestureRecognizers>
+                                                        <TapGestureRecognizer
+                                                            NumberOfTapsRequired="2"
+                                                            CommandParameter="{Binding .}"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TradeViewModel}}, Path= EditTradeCommand}"/>   
+                                                    </Frame.GestureRecognizers>
+                                                    
                                                     <Grid
                                                         Margin="-9"
                                                         ColumnSpacing="0"
@@ -275,6 +360,7 @@
                                                             WidthRequest="35"
                                                             Source="TradeIcon.png"/>
 
+                                                        <!--Pair name-->
                                                         <Label
                                                             Style="{StaticResource SimpleLabelStyle}"
                                                             Grid.Column="1"
@@ -283,21 +369,23 @@
                                                             FontFamily="Montserrat-Bold"
                                                             Text="{Binding Name}" />
 
+                                                        <!--Start date-->
                                                         <Label
                                                             Style="{StaticResource SimpleLabelStyle}"
                                                             Grid.Row="2"
                                                             Grid.Column="1"
                                                             FontSize="11"
                                                             Margin="-25,5,0,0"
-                                                            Text="{Binding EntryDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
+                                                            Text="{Binding EntryDate, StringFormat='{}{0:dd MMM yyyy   hh:mm tt}'}" />
 
+                                                        <!--End date-->
                                                         <Label
                                                             Style="{StaticResource SimpleLabelStyle}"
                                                             Grid.Row="3"
                                                             Grid.Column="1"
                                                             FontSize="11"
                                                             Margin="-25,0,0,0"
-                                                            Text="{Binding ExitDate, StringFormat='{}{0:dd MMM yyyy   hh:mm}'}" />
+                                                            Text="{Binding ExitDate, StringFormat='{}{0:dd MMM yyyy   hh:mm tt}'}" />
 
                                                         <StackLayout
                                                             Orientation="Horizontal"
@@ -307,28 +395,30 @@
                                                             VerticalOptions="Start"
                                                             Margin="0,0,0,0">
 
+                                                            <!--Take profit price-->
                                                             <Label
-                                                            Style="{StaticResource SimpleLabelStyle}"
-                                                            TextColor="LimeGreen"
-                                                            Margin="-20,5,0,0"
-                                                            FontSize="12"
-                                                            FontFamily="Cambria"
-                                                            Text="{Binding TakeProfitPrice}" />
+                                                                Style="{StaticResource SimpleLabelStyle}"
+                                                                TextColor="LimeGreen"
+                                                                Margin="-20,5,0,0"
+                                                                FontSize="12"
+                                                                FontFamily="Cambria"
+                                                                Text="{Binding TakeProfitPrice}" />
 
                                                             <Label
-                                                            Style="{StaticResource SimpleLabelStyle}"
-                                                            Margin="-2,3,0,0"
-                                                            FontSize="12"
-                                                            FontFamily="Cambria"
-                                                            Text="/" />
+                                                                Style="{StaticResource SimpleLabelStyle}"
+                                                                Margin="-2,3,0,0"
+                                                                FontSize="12"
+                                                                FontFamily="Cambria"
+                                                                Text="/" />
 
+                                                            <!--Stop loss price-->
                                                             <Label
-                                                            Style="{StaticResource SimpleLabelStyle}"
-                                                            TextColor="Red"
-                                                            Margin="-2,5,0,0"
-                                                            FontSize="12"
-                                                            FontFamily="Cambria"
-                                                            Text="{Binding StopLossPrice}" />
+                                                                Style="{StaticResource SimpleLabelStyle}"
+                                                                TextColor="Red"
+                                                                Margin="-2,5,0,0"
+                                                                FontSize="12"
+                                                                FontFamily="Cambria"
+                                                                Text="{Binding StopLossPrice}" />
                                                         </StackLayout>
 
                                                         <StackLayout
@@ -339,6 +429,7 @@
                                                             VerticalOptions="Start"
                                                             Margin="0,0,0,0">
 
+                                                            <!--Entry price-->
                                                             <Label
                                                                 Style="{StaticResource SimpleLabelStyle}"
                                                                 TextColor="{StaticResource Gray-700}"
@@ -354,6 +445,7 @@
                                                                 FontFamily="Cambria"
                                                                 Text="/" />
 
+                                                            <!--Amount-->
                                                             <Label
                                                                 Style="{StaticResource SimpleLabelStyle}"
                                                                 TextColor="{StaticResource Gray-700}"

@@ -13,24 +13,27 @@ namespace TradingApp.Services
         {
             TradeModel tradeModel = model;
 
-            double val1 = closePrice - tradeModel.EntryPrice;
+            tradeModel.ClosePrice = closePrice;
 
-            if (val1 <= 0)
-            {
-                val1 = -(val1);
-                tradeModel.Status = "Loss";
-            }
-            else
-            {
-                tradeModel.Status = "Gain";
-            }
+            double val1 = closePrice - (tradeModel.EntryPrice * 1.00401203);
 
-            double val2 = val1 / tradeModel.EntryPrice;
-            double val3 = val2 * 100;
+            if (val1 <= 0)            
+                tradeModel.Status = "Loss";            
+            else            
+                tradeModel.Status = "Gain";            
 
-            tradeModel.NetChange = model.Amount * val2;
-            tradeModel.Percentage = val3;
-            tradeModel.ExitDate = DateTime.Now;
+            double sellOverBuy = closePrice / model.EntryPrice;
+            double netChange = model.Amount * ((0.996004 * sellOverBuy) - 1);
+            double percentage = (tradeModel.NetChange / tradeModel.Amount) * 100;
+
+            if (netChange <= 0)
+                netChange = -netChange;
+
+            if (percentage <= 0)
+                percentage = -percentage;
+
+            tradeModel.NetChange = netChange;
+            tradeModel.Percentage = percentage;
 
             return tradeModel;
         }
@@ -46,8 +49,8 @@ namespace TradingApp.Services
                 {
                     if(TrackedPrice.TrackedPrices.ContainsKey(item.Name))
                     {
-                        item.Percentage = ((TrackedPrice.TrackedPrices[item.Name] - item.EntryPrice) / item.EntryPrice) * 100;
-                        item.NetChange = ((TrackedPrice.TrackedPrices[item.Name] - item.EntryPrice ) / item.EntryPrice) * item.Amount;
+                        item.NetChange = (((TrackedPrice.TrackedPrices[item.Name] * 0.996004) / item.EntryPrice) - 1 ) * item.Amount;
+                        item.Percentage = (item.NetChange / item.Amount) * 100;
                     }
                     else
                     {
@@ -55,7 +58,7 @@ namespace TradingApp.Services
                         item.NetChange = 0;
                     }
 
-                    item.ExitDate = DateTime.MaxValue;
+                    item.ExitDate = DateTime.Now;
                 }
 
                 model.Add(item);
@@ -92,7 +95,7 @@ namespace TradingApp.Services
                 model.Add(item);
             }
 
-            return FormatLoadedTracks(model);
+            return FormatLoadedTracks(model.OrderByDescending(u => u.Id).ToList());
         }
 
         private static List<TrackModel> FormatLoadedTracks(List<TrackModel> data)

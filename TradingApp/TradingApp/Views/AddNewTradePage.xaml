@@ -99,6 +99,16 @@
                             Keyboard="Numeric"/>
                     </inputLayout:SfTextInputLayout>
 
+                    <inputLayout:SfTextInputLayout
+                        Style="{StaticResource BasicTextEntry}"
+                        Hint="Close Price">
+                        <Entry 
+                            x:Name="EntryClosePrice"
+                            Text="{Binding ClosePrice, Mode=TwoWay}"
+                            TextColor="{StaticResource Gray-800}"
+                            Keyboard="Numeric"/>
+                    </inputLayout:SfTextInputLayout>
+
                     <Label
                         IsVisible="{Binding MessageIsVisible}"
                         TextColor="Red"

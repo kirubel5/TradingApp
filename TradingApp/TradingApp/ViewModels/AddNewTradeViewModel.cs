@@ -16,6 +16,7 @@ namespace TradingApp.ViewModels
         private string message;
         private string name;
         private double entryPrice;
+        private double closePrice;
         private double takeProfitPrice;
         private double stopLossPrice;
         private double amount;
@@ -53,6 +54,11 @@ namespace TradingApp.ViewModels
             get => entryPrice;
             set => SetProperty(ref entryPrice, value);
         }
+        public double ClosePrice
+        {
+            get => closePrice;
+            set => SetProperty(ref closePrice, value);
+        }
         public double TakeProfitPrice
         {
             get => takeProfitPrice;
@@ -80,6 +86,9 @@ namespace TradingApp.ViewModels
 
         private async Task OnSaveButtonClicked()
         {
+            if (IsBusy)
+                return;
+
             try
             {
                 MessageIsVisible = false;
@@ -122,46 +131,74 @@ namespace TradingApp.ViewModels
                 }
                 #endregion
 
-                TradeModel model = new TradeModel()
-                {
-                    Name = Name,
-                    EntryPrice = EntryPrice,
-                    Status = "In Progress",
-                    TakeProfitPrice = TakeProfitPrice,
-                    StopLossPrice = StopLossPrice,
-                    Amount = Amount,
-                    EntryDate = DateTime.Now
-                };
-
                 IsBusy = true;
 
-                if (await _dataService.ExistsAsync(model))
-                {
-                    Message = "Quote already saved in database";
-                    IsBusy = false;
-                    return;
-                }
+                TradeModel model = new TradeModel();
 
-                if (await _dataService.CreateAsync(model))
+                //New Trade
+                if(EditableTradeModel.Id == 0)
                 {
-                    DependencyService.Get<IToast>()?.MakeToast("Saved Successfully");
-                    IsBusy = false;
-                    Name = "";
-                    EntryPrice = 0;
-                    TakeProfitPrice = 0;
-                    StopLossPrice = 0;
-                    Amount = 0;
+                    model.Name = Name;
+                    model.EntryPrice = EntryPrice;
+                    model.Status = "In Progress";
+                    model.TakeProfitPrice = TakeProfitPrice;
+                    model.StopLossPrice = StopLossPrice;
+                    model.Amount = Amount;
+                    model.EntryDate = DateTime.Now;
+
+                    if (await _dataService.CreateAsync(model))
+                    {
+                        DependencyService.Get<IToast>()?.MakeToast("Saved Successfully");
+                        IsBusy = false;
+                        Name = "";
+                        EntryPrice = 0;
+                        TakeProfitPrice = 0;
+                        StopLossPrice = 0;
+                        Amount = 0;
+                    }
                 }
                 else
                 {
-                    IsBusy = false;
-                    return;
+                    if (string.IsNullOrWhiteSpace(ClosePrice.ToString()))
+                    {
+                        Message = "Close Price cannot be empty.";
+                        MessageIsVisible = true;
+                        return;
+                    }
+
+                    model.Id = EditableTradeModel.Id;
+                    model.Name = Name;
+                    model.EntryPrice = EntryPrice;
+                    model.TakeProfitPrice = TakeProfitPrice;
+                    model.StopLossPrice = StopLossPrice;
+                    model.Amount = Amount;
+                    model.EntryDate = EditableTradeModel.EntryDate;
+                    model.ExitDate = EditableTradeModel.ExitDate;
+
+                    if (await _dataService.UpdateAsync(Helper.CalculateTradeClose(model, ClosePrice)))
+                    {
+                        DependencyService.Get<IToast>()?.MakeToast("Edited Successfully");
+                        IsBusy = false;
+                        Name = "";
+                        EntryPrice = 0;
+                        TakeProfitPrice = 0;
+                        StopLossPrice = 0;
+                        Amount = 0;
+
+                        EditableTradeModel.Id = 0;
+                    }
                 }
             }
             catch (Exception)
             {
                 Message = "Something went wrong, please try again";
                 MessageIsVisible = true;
+            }
+            finally
+            {
+                IsBusy = false;
+                MessageIsVisible = false;
+                EditableTradeModel.Id = 0;
             }
         }
 

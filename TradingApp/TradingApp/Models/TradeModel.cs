@@ -11,6 +11,7 @@ namespace TradingApp.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public double EntryPrice { get; set; }
+        public double ClosePrice { get; set; }
         public double StopLossPrice { get; set; }
         public double TakeProfitPrice { get; set; }
         public double Amount { get; set; }

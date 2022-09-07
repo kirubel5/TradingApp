@@ -20,7 +20,17 @@ namespace TradingApp.ViewModels
         private bool shimmerIsActive;
         private string imageName;
         private string message;
-        private bool isRefreshing; 
+        private bool isRefreshing;
+        private int inProgressCount;
+        private int lossCount;
+        private int gainCount;
+        private int totalCount;
+        private double lossAmount;
+        private double gainAmount;
+        private double totalAmount;
+        private double lossPercent;
+        private double gainPercent;
+        private double totalPercent;
 
         private IEnumerable<TradeModel> savedTrades;
         public ObservableRangeCollection<TradeModel> SavedTrades { get; set; }
@@ -39,7 +49,8 @@ namespace TradingApp.ViewModels
 
             TrackCommand = new AsyncCommand(OnTrackButtonClicked);
             AddCommand = new AsyncCommand(OnAddButtonClicked);
-            RefreshCommand = new AsyncCommand(OnRefresh);
+            LoadCommand = new AsyncCommand(Load);
+            EditTradeCommand = new AsyncCommand<object>(OnEditTrade);
             LeftSwipeCommand = new AsyncCommand<object>(OnLeftSwipe);
             RightSwipeCommand = new AsyncCommand<object>(OnRightSwipe);
             ShowAllTradesCommand = new Command(OnShowAll);
@@ -70,6 +81,57 @@ namespace TradingApp.ViewModels
             get => isRefreshing;
             set => SetProperty(ref isRefreshing, value);
         }
+        public int InProgressCount
+        {
+            get => inProgressCount;
+            set => SetProperty(ref inProgressCount, value);
+        }
+        public int LossCount
+        {
+            get => lossCount;
+            set => SetProperty(ref lossCount, value);
+        }
+        public int GainCount
+        {
+            get => gainCount;
+            set => SetProperty(ref gainCount, value);
+        }
+        public int TotalCount
+        {
+            get => totalCount;
+            set => SetProperty(ref totalCount, value);
+        }
+        public double LossAmount
+        {
+            get => lossAmount;
+            set => SetProperty(ref lossAmount, value);
+        }
+        public double GainAmount
+        {
+            get => gainAmount;
+            set => SetProperty(ref gainAmount, value);
+        }
+        public double TotalAmount
+        {
+            get => totalAmount;
+            set => SetProperty(ref totalAmount, value);
+        }
+        public double LossPercent
+        {
+            get => lossPercent;
+            set => SetProperty(ref lossPercent, value);
+        }
+        public double GainPercent
+        {
+            get => gainPercent;
+            set => SetProperty(ref gainPercent, value);
+        }
+        public double TotalPercent
+        {
+            get => totalPercent;
+            set => SetProperty(ref totalPercent, value);
+        }
+
 
         #endregion
 
@@ -83,13 +145,19 @@ namespace TradingApp.ViewModels
         public ICommand RightSwipeCommand { get; }
         public ICommand TrackCommand { get; }
         public ICommand AddCommand { get; }
-        public ICommand RefreshCommand { get; }
+        public ICommand LoadCommand { get; }
+        public ICommand EditTradeCommand { get; }
         #endregion
 
         #region Methods    
         public async Task Load()
         {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
             ShimmerIsActive = true;
+            IsRefreshing = true;
             SavedTrades?.Clear();
 
             try
@@ -98,7 +166,6 @@ namespace TradingApp.ViewModels
 
                 if (!res)
                 {
-                    ShimmerIsActive = false;
                     Message = "Error has occured, please try reloading the page.";
                     ImageName = "SomethingWentWrong.png";
                     return;
@@ -106,31 +173,83 @@ namespace TradingApp.ViewModels
 
                 if(data is null || data.Count == 0)
                 {
-                    ShimmerIsActive = false;
                     Message = "No Saved Trades.";
                     ImageName = "NoItem.png";
                     return;
                 }
 
-                ShimmerIsActive = false;
                 savedTrades = Helper.FormatLoadedTrades(data);
-
+                this.CalculateTotal();
                 SavedTrades?.AddRange(savedTrades);
             }
             catch (Exception) 
             {
-                ShimmerIsActive = false;
                 Message = "Error has occured, please try reloading the page.";
                 ImageName = "SomethingWentWrong.png";
                 return;
             }
+            finally
+            {
+                ShimmerIsActive = false;
+                IsRefreshing = false;
+                IsBusy = false;
+            }
+        }
+          
+        private void CalculateTotal()
+        {
+            List<TradeModel> data = savedTrades.ToList();
+
+            InProgressCount = 0;
+            GainCount = 0;
+            LossCount = 0;
+            TotalCount = 0;
+
+            GainAmount = 0;
+            LossAmount = 0;
+            TotalAmount = 0;
+
+            GainPercent = 0;
+            LossPercent = 0;
+            TotalPercent = 0;
+
+            InProgressCount = data.Where(u=>u.Status == "In Progress").Count();
+            GainCount = data.Where(u => u.Status == "Gain").Count();
+            LossCount = data.Where(u => u.Status == "Loss").Count();
+            TotalCount = InProgressCount + GainCount + LossCount;
+
+            foreach (var item in data)
+            {
+                if (item.Status == "Gain")
+                {
+                    GainAmount += item.NetChange;
+                    GainPercent += item.Percentage;
+                }                    
+                else if (item.Status == "Loss")
+                {
+                    LossAmount += item.NetChange;
+                    LossPercent += item.Percentage;
+                }                    
+            }
         }
 
-        private async Task OnRefresh()
+        private async Task OnEditTrade(object obj)
         {
-            IsRefreshing = true;
-            await this.Load();
-            IsRefreshing = false;
+            var val = obj as TradeModel;
+
+            EditableTradeModel.Id = val.Id;
+            EditableTradeModel.Name = val.Name;
+            EditableTradeModel.Amount = val.Amount;
+            EditableTradeModel.EntryPrice = val.EntryPrice;
+            EditableTradeModel.StopLossPrice = val.StopLossPrice;
+            EditableTradeModel.TakeProfitPrice = val.TakeProfitPrice;
+            EditableTradeModel.NetChange = val.NetChange;
+            EditableTradeModel.Status = val.Status;
+            EditableTradeModel.Percentage = val.Percentage;
+            EditableTradeModel.EntryDate = val.EntryDate;
+            EditableTradeModel.ExitDate = val.ExitDate;
+
+            await Shell.Current.GoToAsync("AddNewTradePage");
         }
 
         private async Task OnTrackButtonClicked()
@@ -197,6 +316,9 @@ namespace TradingApp.ViewModels
 
             var val = obj as TradeModel;
 
+            if (val.Status != "In Progress")
+                return;
+
             string res = await Shell.Current.DisplayPromptAsync("Close Trade", "Please insert the price at which the " +
                 "trade is closing: ", "Ok", "Cancel", "amount", 20, Keyboard.Numeric, "");
 
@@ -211,6 +333,7 @@ namespace TradingApp.ViewModels
 
             try
             {
+                val.ExitDate = DateTime.Now;
                 await _dataService.UpdateAsync(Helper.CalculateTradeClose(val, double.Parse(res)));
             }
             catch (Exception)

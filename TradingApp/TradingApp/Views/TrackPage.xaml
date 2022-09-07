@@ -106,7 +106,7 @@
                 <shimmer:SfShimmer 
                     Grid.Row="1"
                     x:Name="ShimmerView" 
-                    IsActive="{Binding ShimmerIsActive}" 
+                    IsActive="False" 
                     VerticalOptions="FillAndExpand" 
                     Type="Feed"   
                     Color="{StaticResource Gray-200}">
@@ -115,7 +115,7 @@
                         <RefreshView    
                             Grid.Row="1"
                             IsRefreshing="{Binding IsRefreshing}"
-                            Command="{Binding RefreshCommand}"
+                            Command="{Binding LoadCommand}"
                             BackgroundColor="Transparent"
                             RefreshColor="{StaticResource Gray-100}">
                             <CollectionView                            
@@ -168,8 +168,8 @@
                                                 <SwipeView.RightItems>
                                                     <SwipeItems Mode="Execute">
                                                         <SwipeItemView 
-                                                        Command="{Binding BindingContext.RightSwipeCommand, Source={x:Reference TrackedTradeCollection}}"
-                                                        CommandParameter="{Binding .}">
+                                                            Command="{Binding BindingContext.RightSwipeCommand, Source={x:Reference TrackedTradeCollection}}"
+                                                            CommandParameter="{Binding .}">
                                                             <StackLayout BackgroundColor="{StaticResource Background}" Padding="10">
                                                                 <Label Text="Stop Track" 
                                                                    FontFamily="Montserrat-Medium" 
@@ -180,6 +180,22 @@
                                                         </SwipeItemView>
                                                     </SwipeItems>
                                                 </SwipeView.RightItems>
+
+                                                <SwipeView.LeftItems>
+                                                    <SwipeItems Mode="Execute">
+                                                        <SwipeItemView 
+                                                            Command="{Binding BindingContext.RightSwipeCommand, Source={x:Reference TrackedTradeCollection}}"
+                                                            CommandParameter="{Binding .}">
+                                                            <StackLayout BackgroundColor="{StaticResource Background}" Padding="10">
+                                                                <Label Text="Stop Track" 
+                                                                   FontFamily="Montserrat-Medium" 
+                                                                   Style="{StaticResource SimpleLabelStyle}"
+                                                                   FontSize="15"
+                                                                   Margin="0,25,0,0"/>
+                                                            </StackLayout>
+                                                        </SwipeItemView>
+                                                    </SwipeItems>
+                                                </SwipeView.LeftItems>
 
                                                 <Frame
                                                     HeightRequest="55"

@@ -34,7 +34,7 @@ namespace TradingApp.ViewModels
 
             AddCommand = new AsyncCommand(OnAddButtonClicked);
             TradeCommand = new AsyncCommand(OnTradeButtonClicked);
-            RefreshCommand = new AsyncCommand(OnRefresh);
+            LoadCommand = new AsyncCommand(Load);
             RightSwipeCommand = new AsyncCommand<object>(OnRightSwipe);
         }
 
@@ -66,12 +66,17 @@ namespace TradingApp.ViewModels
         public ICommand AddCommand { get; }
         public ICommand TradeCommand { get; }
         public ICommand RightSwipeCommand { get; }
-        public ICommand RefreshCommand { get; }
+        public ICommand LoadCommand { get; }
         #endregion
 
         #region Methods
         public async Task Load()
         {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+            IsRefreshing = true;
             ShimmerIsActive = true;
             TrackedTrades?.Clear();
 
@@ -79,7 +84,6 @@ namespace TradingApp.ViewModels
             {
                 if (Connectivity.NetworkAccess == NetworkAccess.None)
                 {
-                    ShimmerIsActive = false;
                     Message = "No internet, please check your connection";
                     ImageName = "NoInternet.png";
                     return;
@@ -89,7 +93,6 @@ namespace TradingApp.ViewModels
 
                 if (!res)
                 {
-                    ShimmerIsActive = false;
                     Message = "Error has occured, please try reloading the page.";
                     ImageName = "SomethingWentWrong.png";
                     return;
@@ -97,31 +100,26 @@ namespace TradingApp.ViewModels
 
                 if (data is null || data.Count == 0)
                 {
-                    ShimmerIsActive = false;
                     Message = "No Saved Trackes.";
                     ImageName = "NoItem.png";
                     return;
                 }
 
-                ShimmerIsActive = false;
                 trackedTrades = await Helper.LoadTrackInformation(data);
-
                 TrackedTrades?.AddRange(trackedTrades);
             }
             catch (Exception)
-            {
-                ShimmerIsActive = false;
+            {               
                 Message = "Error has occured, please try reloading the page.";
                 ImageName = "SomethingWentWrong.png";
                 return;
             }
-        }
-
-        public async Task OnRefresh()
-        {
-            IsRefreshing = true;
-            await this.Load();
-            IsRefreshing = false;
+            finally
+            {
+                ShimmerIsActive = false;
+                IsRefreshing = false;
+                IsBusy = false;
+            }
         }
 
         private async Task OnAddButtonClicked()
