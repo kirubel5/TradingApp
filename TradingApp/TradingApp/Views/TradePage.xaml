@@ -211,7 +211,8 @@
                                                            Style="{StaticResource SimpleLabelStyle}"
                                                        HorizontalOptions="Center"
                                                        FontFamily="Montserrat-Bold"
-                                                       Margin="0,0,0,-2"/>
+                                                       Margin="0,0,0,-2"
+                                                       TextColor="#F5DEB3"/>
 
                                                 <Label Text="{Binding InProgressCount}"
                                                         Grid.Row="1"
@@ -244,20 +245,21 @@
                                                            Grid.Row="1"
                                                            Grid.Column="1"
                                                            Style="{StaticResource SimpleLabelStyle}"
-                                                       HorizontalOptions="Center"/>
-                                                <Label Text="{Binding GainAmount, StringFormat='{}{0:F3}'}"
+                                                       HorizontalOptions="Center"
+                                                       TextColor="#F5DEB3"/>
+                                                <Label Text="{Binding GainAmount, StringFormat='{}{0:F3} $'}"
                                                            Grid.Row="2"
                                                            Grid.Column="1"
                                                            Style="{StaticResource SimpleLabelStyle}"
                                                        TextColor="Lime"
                                                        HorizontalOptions="Center"/>
-                                                <Label Text="{Binding LossAmount, StringFormat='{}{0:F3}'}"
+                                                <Label Text="{Binding LossAmount, StringFormat='{}{0:F3} $'}"
                                                            Grid.Row="3"
                                                            Grid.Column="1"
                                                            Style="{StaticResource SimpleLabelStyle}"
                                                        TextColor="Red"
                                                        HorizontalOptions="Center"/>
-                                                <Label Text="{Binding TotalAmount, StringFormat='{}{0:F3}'}"
+                                                <Label Text="{Binding TotalAmount, StringFormat='{}{0:F3} $'}"
                                                            Grid.Row="4"
                                                            Grid.Column="1"
                                                            Style="{StaticResource SimpleLabelStyle}"
@@ -275,20 +277,21 @@
                                                         Grid.Row="1"
                                                         Grid.Column="2"
                                                         Style="{StaticResource SimpleLabelStyle}"
-                                                       HorizontalOptions="Center"/>
-                                                <Label Text="{Binding GainPercent, StringFormat='{}{0:F3}'}"
+                                                       HorizontalOptions="Center"
+                                                       TextColor="#F5DEB3"/>
+                                                <Label Text="{Binding GainPercent, StringFormat='{}{0:F3} %'}"
                                                         Grid.Row="2"
                                                         Grid.Column="2"
                                                         Style="{StaticResource SimpleLabelStyle}"
                                                        TextColor="Lime"
                                                        HorizontalOptions="Center"/>
-                                                <Label Text="{Binding LossPercent, StringFormat='{}{0:F3}'}"
+                                                <Label Text="{Binding LossPercent, StringFormat='{}{0:F3} %'}"
                                                         Grid.Row="3"
                                                         Grid.Column="2"
                                                         Style="{StaticResource SimpleLabelStyle}"
                                                        TextColor="Red"
                                                        HorizontalOptions="Center"/>
-                                                <Label Text="{Binding TotalPercent, StringFormat='{}{0:F3}'}"
+                                                <Label Text="{Binding TotalPercent, StringFormat='{}{0:F3} %'}"
                                                         Grid.Row="4"
                                                         Grid.Column="2"
                                                         Style="{StaticResource SimpleLabelStyle}"

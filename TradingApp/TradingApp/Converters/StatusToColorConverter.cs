@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using TradingApp.Enums;
 using Xamarin.Forms;
 
 namespace TradingApp.Converters
@@ -13,11 +14,11 @@ namespace TradingApp.Converters
             if (value is null)
                 return "#FF0000";
 
-            if ((string)value == "In Progress" || (string)value == "in Progress")
+            if ((string)value == Status.InProgress.ToString())
                 return "#F5DEB3";
-            else if ((string)value == "Gain" || (string)value == "gain")
+            else if ((string)value == Status.Gain.ToString())
                 return "#32CD32";
-            else if ((string)value == "Loss" || (string)value == "loss")
+            else if ((string)value == Status.Loss.ToString())
                 return "#FF0000";
             else
                 return "#FF0000";
