@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradingApp.Enums;
 using TradingApp.Models;
 
 namespace TradingApp.Services
@@ -18,13 +19,13 @@ namespace TradingApp.Services
             double val1 = closePrice - (tradeModel.EntryPrice * 1.00401203);
 
             if (val1 <= 0)            
-                tradeModel.Status = "Loss";            
+                tradeModel.Status = Status.Loss.ToString();            
             else            
-                tradeModel.Status = "Gain";            
+                tradeModel.Status = Status.Gain.ToString();           
 
             double sellOverBuy = closePrice / model.EntryPrice;
             double netChange = model.Amount * ((0.996004 * sellOverBuy) - 1);
-            double percentage = (tradeModel.NetChange / tradeModel.Amount) * 100;
+            double percentage = (netChange / tradeModel.Amount) * 100;
 
             if (netChange <= 0)
                 netChange = -netChange;
@@ -45,7 +46,7 @@ namespace TradingApp.Services
 
             foreach (var item in data)
             {
-                if(item.Status == "In Progress")
+                if(item.Status == Status.InProgress.ToString())
                 {
                     if(TrackedPrice.TrackedPrices.ContainsKey(item.Name))
                     {
@@ -104,11 +105,11 @@ namespace TradingApp.Services
             {
                 if (item.Percentage < 0)
                 {
-                    item.Status = "Loss";
+                    item.Status = Status.Loss.ToString();
                     item.Percentage = -1 * item.Percentage;
                 }                    
                 else
-                    item.Status = "Gain";
+                    item.Status = Status.Gain.ToString();
             }
 
             return data;

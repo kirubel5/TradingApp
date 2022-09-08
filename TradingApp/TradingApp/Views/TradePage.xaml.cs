@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradingApp.Services;
 using TradingApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,7 +18,6 @@ namespace TradingApp.Views
         public TradePage()
         {
             InitializeComponent();
-
             tradeViewModel = new TradeViewModel();
             BindingContext = tradeViewModel;
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TradingApp.Enums;
 using TradingApp.Models;
 using TradingApp.Services;
 using WaissLibraryStandard;
@@ -32,7 +33,7 @@ namespace TradingApp.ViewModels
         private double gainPercent;
         private double totalPercent;
 
-        private IEnumerable<TradeModel> savedTrades;
+        private List<TradeModel> savedTrades;
         public ObservableRangeCollection<TradeModel> SavedTrades { get; set; }
 
         private readonly IDataService _dataService;
@@ -41,7 +42,7 @@ namespace TradingApp.ViewModels
 
         public TradeViewModel()
         {
-            savedTrades = new ObservableRangeCollection<TradeModel>();
+            savedTrades = new List<TradeModel>();
             SavedTrades = new ObservableRangeCollection<TradeModel>();
 
             _dataService = new DataService();
@@ -158,11 +159,13 @@ namespace TradingApp.ViewModels
             IsBusy = true;
             ShimmerIsActive = true;
             IsRefreshing = true;
+
+            savedTrades.Clear();
             SavedTrades?.Clear();
 
             try
             {
-                var (res,data) = await _dataService.GetSavedTradesAsync();
+                var (res, data) = await _dataService.GetSavedTradesAsync();
 
                 if (!res)
                 {
@@ -180,7 +183,7 @@ namespace TradingApp.ViewModels
 
                 savedTrades = Helper.FormatLoadedTrades(data);
                 this.CalculateTotal();
-                SavedTrades?.AddRange(savedTrades);
+                SavedTrades.AddRange(savedTrades);
             }
             catch (Exception) 
             {
@@ -213,19 +216,19 @@ namespace TradingApp.ViewModels
             LossPercent = 0;
             TotalPercent = 0;
 
-            InProgressCount = data.Where(u=>u.Status == "In Progress").Count();
-            GainCount = data.Where(u => u.Status == "Gain").Count();
-            LossCount = data.Where(u => u.Status == "Loss").Count();
+            InProgressCount = data.Where(u=>u.Status == Status.InProgress.ToString()).Count();
+            GainCount = data.Where(u => u.Status == Status.Gain.ToString()).Count();
+            LossCount = data.Where(u => u.Status == Status.Loss.ToString()).Count();
             TotalCount = InProgressCount + GainCount + LossCount;
 
             foreach (var item in data)
             {
-                if (item.Status == "Gain")
+                if (item.Status == Status.Gain.ToString())
                 {
                     GainAmount += item.NetChange;
                     GainPercent += item.Percentage;
                 }                    
-                else if (item.Status == "Loss")
+                else if (item.Status == Status.Loss.ToString())
                 {
                     LossAmount += item.NetChange;
                     LossPercent += item.Percentage;
@@ -241,6 +244,7 @@ namespace TradingApp.ViewModels
             EditableTradeModel.Name = val.Name;
             EditableTradeModel.Amount = val.Amount;
             EditableTradeModel.EntryPrice = val.EntryPrice;
+            EditableTradeModel.ClosePrice = val.ClosePrice;
             EditableTradeModel.StopLossPrice = val.StopLossPrice;
             EditableTradeModel.TakeProfitPrice = val.TakeProfitPrice;
             EditableTradeModel.NetChange = val.NetChange;
@@ -316,7 +320,7 @@ namespace TradingApp.ViewModels
 
             var val = obj as TradeModel;
 
-            if (val.Status != "In Progress")
+            if (val.Status != Status.InProgress.ToString())
                 return;
 
             string res = await Shell.Current.DisplayPromptAsync("Close Trade", "Please insert the price at which the " +
@@ -375,7 +379,7 @@ namespace TradingApp.ViewModels
             {
                 SavedTrades?.Clear();
                 SavedTrades.AddRange(savedTrades
-                    .Where(x => x.Status == "Gain" || x.Status == "Loss")
+                    .Where(x => x.Status == Status.Gain.ToString() || x.Status == Status.Loss.ToString())
                     .ToList());
 
                 if (SavedTrades is null || SavedTrades.Count == 0)
@@ -398,7 +402,7 @@ namespace TradingApp.ViewModels
             try
             {
                 SavedTrades?.Clear();
-                SavedTrades.AddRange(savedTrades.Where(x => x.Status == "In Progress").ToList());
+                SavedTrades.AddRange(savedTrades.Where(x => x.Status == Status.InProgress.ToString()).ToList());
 
                 if (SavedTrades is null || SavedTrades.Count == 0)
                 {
@@ -420,7 +424,7 @@ namespace TradingApp.ViewModels
             try
             {
                 SavedTrades?.Clear();
-                SavedTrades.AddRange(savedTrades.Where(x => x.Status == "Gain").ToList());
+                SavedTrades.AddRange(savedTrades.Where(x => x.Status == Status.Gain.ToString()).ToList());
 
                 if (SavedTrades is null || SavedTrades.Count == 0)
                 {
@@ -442,7 +446,7 @@ namespace TradingApp.ViewModels
             try
             {
                 SavedTrades?.Clear();
-                SavedTrades.AddRange(savedTrades.Where(x => x.Status == "Loss").ToList());
+                SavedTrades.AddRange(savedTrades.Where(x => x.Status == Status.Loss.ToString()).ToList());
 
                 if(SavedTrades is null || SavedTrades.Count == 0)
                 {

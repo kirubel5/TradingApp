@@ -3,6 +3,7 @@ using MvvmHelpers.Commands;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TradingApp.Enums;
 using TradingApp.Models;
 using TradingApp.Services;
 using Xamarin.Forms;
@@ -95,6 +96,14 @@ namespace TradingApp.ViewModels
 
                 #region Input validation
 
+                if(Name == "SeedTrade")
+                {
+                    Seed.SeedTrade();
+
+                    DependencyService.Get<IToast>()?.MakeToast("Data seeded Successfully");
+                    return;
+                }
+
                 if (string.IsNullOrWhiteSpace(Name))
                 {
                     Message = "Name cannot be empty.";
@@ -140,7 +149,7 @@ namespace TradingApp.ViewModels
                 {
                     model.Name = Name;
                     model.EntryPrice = EntryPrice;
-                    model.Status = "In Progress";
+                    model.Status = Status.InProgress.ToString();
                     model.TakeProfitPrice = TakeProfitPrice;
                     model.StopLossPrice = StopLossPrice;
                     model.Amount = Amount;

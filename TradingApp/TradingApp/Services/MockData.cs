@@ -27,5 +27,6 @@ namespace TradingApp.Services
             new TradeModel {Id = 6, Name = "HIGH_USDT", EntryPrice = 23.12, StopLossPrice = 23.11, TakeProfitPrice = 23.1, Status = "Gain", Percentage = 3.26, EntryDate = DateTime.Now, ExitDate = DateTime.Now}
 
         };
+
     }
 }

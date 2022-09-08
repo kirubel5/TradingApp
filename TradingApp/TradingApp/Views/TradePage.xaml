@@ -225,7 +225,9 @@
                                                     HasShadow="True">
 
                                                 <Grid ColumnDefinitions="*,*,*"
-                                                      RowDefinitions="*,*,*,*,*">
+                                                      RowDefinitions="*,*,*,*,*"
+                                                      Margin="10"
+                                                      Padding="5">
 
                                                     <!--Count-->
                                                     <Label Text="Count"
