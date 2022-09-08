@@ -103,6 +103,12 @@
                                     CornerRadius="20" FontFamily="Montserrat-Regular" 
                                     FontSize="13"
                                     Command="{Binding ShowLossTradesCommand}"/>
+                                <buttons:SfChip 
+                                    Text=" Total " 
+                                    BackgroundColor="{StaticResource GridBackground}" 
+                                    CornerRadius="20" FontFamily="Montserrat-Regular" 
+                                    FontSize="13"
+                                    Command="{Binding ShowTotalCommand}"/>
                             </buttons:SfChipGroup.Items>
                         </buttons:SfChipGroup>
                     </ScrollView>
@@ -211,87 +217,7 @@
                                                 Style="{StaticResource SimpleLabelStyle}"/>
                                         </StackLayout>
                                     </ContentView>
-                                </CollectionView.EmptyView>
-
-                                <CollectionView.FooterTemplate>
-                                    <DataTemplate>
-                                        <Grid Padding="0,7,0,-10" Margin="0" BackgroundColor="{StaticResource Background}">
-                                           
-                                            <Frame  HeightRequest="55"
-                                                    Margin="7,0,7,10"                                        
-                                                    BackgroundColor="{StaticResource GridBackground}"                                                    
-                                                    BorderColor="{StaticResource Background}"
-                                                    CornerRadius="20"
-                                                    HasShadow="True">
-
-                                                <Grid ColumnDefinitions="*,*,*"
-                                                      RowDefinitions="*,*,*,*,*"
-                                                      Margin="10"
-                                                      Padding="5">
-
-                                                    <!--Count-->
-                                                    <Label Text="Count"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    
-                                                    <Label Text="{Binding InProgressCount}"
-                                                           Grid.Row="1"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding GainCount}"
-                                                           Grid.Row="2"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding LossCount}"
-                                                           Grid.Row="3"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding TotalCount}"
-                                                           Grid.Row="3"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-
-                                                    <!--Amount-->
-                                                    <Label Text="Amount"
-                                                           Grid.Column="1"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="--"
-                                                           Grid.Row="1"
-                                                           Grid.Column="1"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding GainAmount}"
-                                                           Grid.Row="2"
-                                                           Grid.Column="1"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding LossAmount}"
-                                                           Grid.Row="3"
-                                                           Grid.Column="1"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding TotalAmount}"
-                                                           Grid.Row="3"
-                                                           Grid.Column="1"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    
-                                                    <!--Percent-->
-                                                    <Label Text="Percent"
-                                                           Grid.Column="2"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="--"
-                                                           Grid.Row="1"
-                                                           Grid.Column="2"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding GainPercent}"
-                                                           Grid.Row="2"
-                                                           Grid.Column="2"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding LossPercent}"
-                                                           Grid.Row="3"
-                                                           Grid.Column="2"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                    <Label Text="{Binding TotalPercent}"
-                                                           Grid.Row="3"
-                                                           Grid.Column="2"
-                                                           Style="{StaticResource SimpleLabelStyle}"/>
-                                                </Grid>
-                                            </Frame>
-                                        </Grid>
-                                    </DataTemplate>
-                                </CollectionView.FooterTemplate>
+                                </CollectionView.EmptyView>                               
                                 
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>

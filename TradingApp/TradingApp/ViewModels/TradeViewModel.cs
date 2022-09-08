@@ -59,6 +59,7 @@ namespace TradingApp.ViewModels
             ShowInProgressTradesCommand = new Command(OnShowInProgress);
             ShowGainTradesCommand = new Command(OnShowGain);
             ShowLossTradesCommand = new Command(OnShowLoss);
+            ShowTotalCommand = new AsyncCommand(OnShowTotal);
         }
 
         #region Properties
@@ -142,6 +143,7 @@ namespace TradingApp.ViewModels
         public ICommand ShowInProgressTradesCommand { get; }
         public ICommand ShowGainTradesCommand { get; }
         public ICommand ShowLossTradesCommand { get; }
+        public ICommand ShowTotalCommand { get; }
         public ICommand LeftSwipeCommand { get; }
         public ICommand RightSwipeCommand { get; }
         public ICommand TrackCommand { get; }
@@ -461,6 +463,11 @@ namespace TradingApp.ViewModels
                 ImageName = "SomethingWentWrong.png";
                 return;
             }
+        }
+
+        private async Task OnShowTotal()
+        {
+            
         }
 
         #endregion
