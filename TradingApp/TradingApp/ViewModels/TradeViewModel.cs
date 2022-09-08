@@ -59,7 +59,7 @@ namespace TradingApp.ViewModels
             ShowInProgressTradesCommand = new Command(OnShowInProgress);
             ShowGainTradesCommand = new Command(OnShowGain);
             ShowLossTradesCommand = new Command(OnShowLoss);
-            ShowTotalCommand = new AsyncCommand(OnShowTotal);
+            ShowTotalCommand = new Command(CalculateTotal);
         }
 
         #region Properties
@@ -143,13 +143,13 @@ namespace TradingApp.ViewModels
         public ICommand ShowInProgressTradesCommand { get; }
         public ICommand ShowGainTradesCommand { get; }
         public ICommand ShowLossTradesCommand { get; }
-        public ICommand ShowTotalCommand { get; }
         public ICommand LeftSwipeCommand { get; }
         public ICommand RightSwipeCommand { get; }
         public ICommand TrackCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand LoadCommand { get; }
         public ICommand EditTradeCommand { get; }
+        public ICommand ShowTotalCommand { get; }
         #endregion
 
         #region Methods    
@@ -184,8 +184,8 @@ namespace TradingApp.ViewModels
                 }
 
                 savedTrades = Helper.FormatLoadedTrades(data);
-                this.CalculateTotal();
                 SavedTrades.AddRange(savedTrades);
+                this.CalculateTotal();
             }
             catch (Exception) 
             {
@@ -203,39 +203,55 @@ namespace TradingApp.ViewModels
           
         private void CalculateTotal()
         {
-            List<TradeModel> data = savedTrades.ToList();
+            List<TradeModel> data = savedTrades;
 
-            InProgressCount = 0;
-            GainCount = 0;
-            LossCount = 0;
-            TotalCount = 0;
+            inProgressCount = 0;
+            gainCount = 0;
+            lossCount = 0;
+            totalCount = 0;
 
-            GainAmount = 0;
-            LossAmount = 0;
-            TotalAmount = 0;
+            gainAmount = 0;
+            lossAmount = 0;
+            totalAmount = 0;
 
-            GainPercent = 0;
-            LossPercent = 0;
-            TotalPercent = 0;
+            gainPercent = 0;
+            lossPercent = 0;
+            totalPercent = 0;
 
-            InProgressCount = data.Where(u=>u.Status == Status.InProgress.ToString()).Count();
-            GainCount = data.Where(u => u.Status == Status.Gain.ToString()).Count();
-            LossCount = data.Where(u => u.Status == Status.Loss.ToString()).Count();
-            TotalCount = InProgressCount + GainCount + LossCount;
+            inProgressCount = data.Where(u=>u.Status == Status.InProgress.ToString()).Count();
+            gainCount = data.Where(u => u.Status == Status.Gain.ToString()).Count();
+            lossCount = data.Where(u => u.Status == Status.Loss.ToString()).Count();
+            totalCount = inProgressCount + gainCount + lossCount;
 
             foreach (var item in data)
             {
                 if (item.Status == Status.Gain.ToString())
                 {
-                    GainAmount += item.NetChange;
-                    GainPercent += item.Percentage;
+                    gainAmount += item.NetChange;
+                    gainPercent += item.Percentage;
                 }                    
                 else if (item.Status == Status.Loss.ToString())
                 {
-                    LossAmount += item.NetChange;
-                    LossPercent += item.Percentage;
+                    lossAmount += item.NetChange;
+                    lossPercent += item.Percentage;
                 }                    
             }
+
+            totalAmount = gainAmount - lossAmount;
+            totalPercent = gainPercent - lossPercent;
+
+            InProgressCount = inProgressCount;
+            GainCount = gainCount;
+            LossCount = lossCount;
+            TotalCount = totalCount;
+
+            GainAmount = gainAmount;
+            LossAmount = lossAmount;
+            TotalAmount = totalAmount;
+
+            GainPercent = gainPercent;
+            LossPercent = lossPercent;
+            TotalPercent = totalPercent;
         }
 
         private async Task OnEditTrade(object obj)
@@ -463,11 +479,6 @@ namespace TradingApp.ViewModels
                 ImageName = "SomethingWentWrong.png";
                 return;
             }
-        }
-
-        private async Task OnShowTotal()
-        {
-            
         }
 
         #endregion
