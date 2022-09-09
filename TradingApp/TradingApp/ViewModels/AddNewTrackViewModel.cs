@@ -79,7 +79,7 @@ namespace TradingApp.ViewModels
                     return;
                 }
 
-                Message = "Checking quote, please wait. Don't click the save button again.";
+                Message = "Checking quote, please wait";
                 MessageIsVisible = true;
                 bool res = await Helper.CheckQuote(Name);
 

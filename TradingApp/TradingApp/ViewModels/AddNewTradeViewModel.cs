@@ -193,6 +193,7 @@ namespace TradingApp.ViewModels
                         TakeProfitPrice = 0;
                         StopLossPrice = 0;
                         Amount = 0;
+                        ClosePrice = 0;
 
                         EditableTradeModel.Id = 0;
                     }

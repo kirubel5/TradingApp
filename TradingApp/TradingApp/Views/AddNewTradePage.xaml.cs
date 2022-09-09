@@ -58,6 +58,8 @@ namespace TradingApp.Views
             addNewTradeViewModel.EntryPrice = 0;
             addNewTradeViewModel.TakeProfitPrice = 0;
             addNewTradeViewModel.StopLossPrice = 0;
+            addNewTradeViewModel.ClosePrice = 0;
+            addNewTradeViewModel.Amount = 0;
         }
 
     }
