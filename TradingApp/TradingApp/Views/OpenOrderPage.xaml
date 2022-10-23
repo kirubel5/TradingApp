@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TradingApp.Views.OpenOrderPage" 
+             xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+            >
+
+    <ContentPage.BindingContext>
+        <viewmodels:TradeViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource Background}">
+
+            <Grid RowDefinitions="auto, *, auto" 
+                  BackgroundColor="{StaticResource Background}" 
+                  RowSpacing="0" 
+                  Margin="0,0,0,0">
+
+                <!--Navigation Bar-->
+                <Frame                           
+                    BackgroundColor="{StaticResource GridBackground}"
+                    Margin="2,10,2,1"
+                    HeightRequest="10"
+                    HasShadow="True"
+                    CornerRadius="15">
+
+                    <Grid ColumnDefinitions="*, auto">
+                        <Label 
+                            Text="Open Orders"
+                            Style="{StaticResource SimpleLabelStyle}"
+                            Margin="10,-13,0,-10"
+                            FontFamily="Montserrat-Regular"
+                            FontSize="25"/>    
+                    </Grid>
+                </Frame>
+
+                <!--Tabbar-->
+                <Frame            
+                    Grid.Row="2"
+                    BackgroundColor="{StaticResource GridBackground}"
+                    Margin="0,1,0,-10"
+                    HeightRequest="22"
+                    HasShadow="False"
+                    CornerRadius="15">
+
+                    <Grid ColumnDefinitions="*, *">
+
+                        <buttons:SfButton                                    
+                            ShowIcon="False"
+                            ImageSource="Track.png"
+                            ImageAlignment="Top"
+                            ImageWidth="20"
+                            Margin="20,-15,0,-5"
+                            Grid.Column="0"
+                            HorizontalOptions="Center"
+                            HeightRequest="20"
+                            WidthRequest="50"
+                            BackgroundColor="{StaticResource Background}"
+                            CornerRadius="25"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="1"
+                            BackgroundImage="Track.png"
+                            TextColor="{StaticResource Gray-800}"/>
+
+                        <buttons:SfButton
+                            BackgroundImage="Trade.png"
+                            Margin="0,-15,0,-5"
+                            Grid.Column="1"
+                            HorizontalOptions="Center"
+                            HeightRequest="20"
+                            WidthRequest="50"
+                            BackgroundColor="{StaticResource GridBackground}"
+                            CornerRadius="19"
+                            FontFamily="Montserrat-Medium"
+                            FontSize="14"
+                            TextColor="{StaticResource Gray-800}"
+                            Command="{Binding TradeCommand}"/>
+                    </Grid>
+                </Frame>
+
+                <RefreshView    
+                            Grid.Row="1"
+                            IsRefreshing="{Binding IsRefreshing}"
+                            Command="{Binding LoadCommand}"
+                            BackgroundColor="Transparent"
+                            RefreshColor="{StaticResource Gray-100}">
+
+                    <CollectionView                            
+                                Margin="0,-5,0,0"                            
+                                Grid.Row="1"
+                                x:Name="TrackedTradeCollection"  
+                                ItemSizingStrategy="MeasureAllItems"                           
+                                ItemsSource ="{Binding TrackedTrades}"
+                                HeightRequest="50"
+                                SelectionMode="None"
+                                BackgroundColor="{StaticResource Background}">
+
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout
+                                    Orientation="Vertical"
+                                    ItemSpacing="7"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.EmptyView>
+                            <ContentView>
+                                <StackLayout
+                                        BackgroundColor="Transparent"
+                                        Spacing="0"
+                                        VerticalOptions="Center">
+
+                                    <!--  Display the svg illustration image  -->
+                                    <Image
+                                                HeightRequest="350"
+                                                WidthRequest="200"
+                                                Source="{Binding ImageName}"
+                                                VerticalOptions="Center"/>
+
+                                    <!--  Label to display content  -->
+                                    <Label
+                                                Margin="20,-20,0,0"
+                                                FontSize="18"
+                                                Text="{Binding Message}"
+                                                VerticalTextAlignment="Center"
+                                                HorizontalOptions="Center"
+                                                Style="{StaticResource SimpleLabelStyle}"/>
+                                </StackLayout>
+                            </ContentView>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,0,0,0" Margin="0">
+                                    
+                                    
+                                    
+                                    
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -18,10 +18,6 @@ namespace TradingApp.ViewModels
     public class TradeViewModel : ViewModelBase
     {
         #region Fields
-        private bool shimmerIsActive;
-        private string imageName;
-        private string message;
-        private bool isRefreshing;
         private int inProgressCount;
         private int lossCount;
         private int gainCount;
@@ -32,6 +28,7 @@ namespace TradingApp.ViewModels
         private double lossPercent;
         private double gainPercent;
         private double totalPercent;
+        private bool totalFrameIsVisible;
 
         private List<TradeModel> savedTrades;
         public ObservableRangeCollection<TradeModel> SavedTrades { get; set; }
@@ -59,30 +56,10 @@ namespace TradingApp.ViewModels
             ShowInProgressTradesCommand = new Command(OnShowInProgress);
             ShowGainTradesCommand = new Command(OnShowGain);
             ShowLossTradesCommand = new Command(OnShowLoss);
-            ShowTotalCommand = new Command(CalculateTotal);
+            ShowTotalCommand = new Command(OnShowTotal);
         }
 
-        #region Properties
-        public string ImageName
-        {
-            get => imageName;
-            set => SetProperty(ref imageName, value);
-        }
-        public string Message
-        {
-            get => message;
-            set => SetProperty(ref message, value);
-        }
-        public bool ShimmerIsActive
-        {
-            get => shimmerIsActive;
-            set => SetProperty(ref shimmerIsActive, value);
-        }
-        public bool IsRefreshing
-        {
-            get => isRefreshing;
-            set => SetProperty(ref isRefreshing, value);
-        }
+        #region Properties       
         public int InProgressCount
         {
             get => inProgressCount;
@@ -133,8 +110,11 @@ namespace TradingApp.ViewModels
             get => totalPercent;
             set => SetProperty(ref totalPercent, value);
         }
-
-
+        public bool TotalFrameIsVisible
+        {
+            get => totalFrameIsVisible;
+            set => SetProperty(ref totalFrameIsVisible, value);
+        }
         #endregion
 
         #region Commands
@@ -161,6 +141,7 @@ namespace TradingApp.ViewModels
             IsBusy = true;
             ShimmerIsActive = true;
             IsRefreshing = true;
+            TotalFrameIsVisible = false;
 
             savedTrades.Clear();
             SavedTrades?.Clear();
@@ -185,7 +166,6 @@ namespace TradingApp.ViewModels
 
                 savedTrades = Helper.FormatLoadedTrades(data);
                 SavedTrades.AddRange(savedTrades);
-                this.CalculateTotal();
             }
             catch (Exception) 
             {
@@ -201,59 +181,6 @@ namespace TradingApp.ViewModels
             }
         }
           
-        private void CalculateTotal()
-        {
-            List<TradeModel> data = savedTrades;
-
-            inProgressCount = 0;
-            gainCount = 0;
-            lossCount = 0;
-            totalCount = 0;
-
-            gainAmount = 0;
-            lossAmount = 0;
-            totalAmount = 0;
-
-            gainPercent = 0;
-            lossPercent = 0;
-            totalPercent = 0;
-
-            inProgressCount = data.Where(u=>u.Status == Status.InProgress.ToString()).Count();
-            gainCount = data.Where(u => u.Status == Status.Gain.ToString()).Count();
-            lossCount = data.Where(u => u.Status == Status.Loss.ToString()).Count();
-            totalCount = inProgressCount + gainCount + lossCount;
-
-            foreach (var item in data)
-            {
-                if (item.Status == Status.Gain.ToString())
-                {
-                    gainAmount += item.NetChange;
-                    gainPercent += item.Percentage;
-                }                    
-                else if (item.Status == Status.Loss.ToString())
-                {
-                    lossAmount += item.NetChange;
-                    lossPercent += item.Percentage;
-                }                    
-            }
-
-            totalAmount = gainAmount - lossAmount;
-            totalPercent = gainPercent - lossPercent;
-
-            InProgressCount = inProgressCount;
-            GainCount = gainCount;
-            LossCount = lossCount;
-            TotalCount = totalCount;
-
-            GainAmount = gainAmount;
-            LossAmount = lossAmount;
-            TotalAmount = totalAmount;
-
-            GainPercent = gainPercent;
-            LossPercent = lossPercent;
-            TotalPercent = totalPercent;
-        }
-
         private async Task OnEditTrade(object obj)
         {
             var val = obj as TradeModel;
@@ -371,6 +298,8 @@ namespace TradingApp.ViewModels
 
         private void OnShowAll()
         {
+            TotalFrameIsVisible = false;
+
             try
             {
                 SavedTrades?.Clear();
@@ -393,6 +322,8 @@ namespace TradingApp.ViewModels
 
         private void OnShowDone()
         {
+            TotalFrameIsVisible = false;
+
             try
             {
                 SavedTrades?.Clear();
@@ -415,8 +346,10 @@ namespace TradingApp.ViewModels
             }
         }
 
-        public void OnShowInProgress()
+        private void OnShowInProgress()
         {
+            TotalFrameIsVisible = false;
+
             try
             {
                 SavedTrades?.Clear();
@@ -437,8 +370,32 @@ namespace TradingApp.ViewModels
             }
         }
 
+        public async Task OnAppearingDisplay()
+        {
+            TotalFrameIsVisible = false;
+
+            try
+            {
+                SavedTrades?.Clear();
+                SavedTrades.AddRange(savedTrades.Where(x => x.Status == Status.InProgress.ToString()).ToList());
+
+                if (SavedTrades is null || SavedTrades.Count == 0)
+                {
+                    await this.Load();
+                }
+            }
+            catch (Exception)
+            {
+                Message = "Error has occured, please try reloading the page.";
+                ImageName = "SomethingWentWrong.png";
+                return;
+            }
+        }
+
         private void OnShowGain()
         {
+            TotalFrameIsVisible = false;
+
             try
             {
                 SavedTrades?.Clear();
@@ -461,6 +418,8 @@ namespace TradingApp.ViewModels
 
         private void OnShowLoss()
         {
+            TotalFrameIsVisible = false;
+
             try
             {
                 SavedTrades?.Clear();
@@ -479,6 +438,50 @@ namespace TradingApp.ViewModels
                 ImageName = "SomethingWentWrong.png";
                 return;
             }
+        }
+
+        private void OnShowTotal()
+        {
+            TotalFrameIsVisible = true;
+
+            List<TradeModel> data = savedTrades;
+
+            InProgressCount = 0;
+            GainCount = 0;
+            LossCount = 0;
+            TotalCount = 0;
+
+            GainAmount = 0;
+            LossAmount = 0;
+            TotalAmount = 0;
+
+            GainPercent = 0;
+            LossPercent = 0;
+            TotalPercent = 0;
+
+            InProgressCount = data.Where(u => u.Status == Status.InProgress.ToString()).Count();
+            GainCount = data.Where(u => u.Status == Status.Gain.ToString()).Count();
+            LossCount = data.Where(u => u.Status == Status.Loss.ToString()).Count();
+            TotalCount = inProgressCount + gainCount + lossCount;
+
+            foreach (var item in data)
+            {
+                if (item.Status == Status.Gain.ToString())
+                {
+                    GainAmount += item.NetChange;
+                    GainPercent += item.Percentage;
+                }
+                else if (item.Status == Status.Loss.ToString())
+                {
+                    LossAmount += item.NetChange;
+                    LossPercent += item.Percentage;
+                }
+            }
+
+            TotalAmount = GainAmount - LossAmount;
+            TotalPercent = GainPercent - LossPercent;
+
+
         }
 
         #endregion

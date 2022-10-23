@@ -118,6 +118,18 @@ namespace TradingApp.Services
                     EntryDate = DateTime.Parse("09/02/2022 16:19"),
                     ExitDate = DateTime.Parse("09/07/2022 15:42")
                  },
+
+                 new TradeModel
+                 {
+                    Name = "DATA_USDT",
+                    EntryPrice = 0.029,
+                    ClosePrice = 0.029,
+                    StopLossPrice = 0.02775,
+                    TakeProfitPrice = 0.0348,
+                    Amount = 9,
+                    EntryDate = DateTime.Parse("09/09/2022 11:13"),
+                    ExitDate = DateTime.Parse("09/12/2022 14:44")
+                 },
             };
 
             IDataService service = new DataService();

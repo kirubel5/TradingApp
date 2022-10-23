@@ -15,10 +15,6 @@ namespace TradingApp.ViewModels
     public class TrackViewModel : ViewModelBase
     {
         #region Fields
-        private string imageName;
-        private string message;
-        private bool shimmerIsActive;
-        private bool isRefreshing;
 
         private IEnumerable<TrackModel> trackedTrades;
         public ObservableRangeCollection<TrackModel> TrackedTrades { get; set; }
@@ -39,26 +35,7 @@ namespace TradingApp.ViewModels
         }
 
         #region Properties
-        public string ImageName
-        {
-            get => imageName;
-            set => SetProperty(ref imageName, value);
-        }
-        public string Message
-        {
-            get => message;
-            set => SetProperty(ref message, value);
-        }
-        public bool ShimmerIsActive
-        {
-            get => shimmerIsActive;
-            set => SetProperty(ref shimmerIsActive, value);
-        }
-        public bool IsRefreshing
-        {
-            get => isRefreshing;
-            set => SetProperty(ref isRefreshing, value);
-        }
+       
         #endregion
 
         #region Commands
@@ -100,7 +77,7 @@ namespace TradingApp.ViewModels
 
                 if (data is null || data.Count == 0)
                 {
-                    Message = "No Saved Trackes.";
+                    Message = "No Saved Tracks.";
                     ImageName = "NoItem.png";
                     return;
                 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingApp.Android", "TradingApp\TradingApp.Android\TradingApp.Android.csproj", "{E0ECEB27-952B-46EF-98A6-DDF013243F07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingApp", "TradingApp\TradingApp\TradingApp.csproj", "{F463DC82-E9B0-4578-A979-0B804FC84194}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingApp", "TradingApp\TradingApp\TradingApp.csproj", "{F463DC82-E9B0-4578-A979-0B804FC84194}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

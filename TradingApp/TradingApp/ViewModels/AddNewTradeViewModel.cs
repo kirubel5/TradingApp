@@ -14,7 +14,6 @@ namespace TradingApp.ViewModels
     {
         #region Fields
         private bool messageIsVisible;
-        private string message;
         private string name;
         private double entryPrice;
         private double closePrice;
@@ -34,12 +33,7 @@ namespace TradingApp.ViewModels
         }
 
         #region Properties
-        public string Message
-        {
-            get => message;
-            set => SetProperty(ref message, value);
-        }
-
+       
         public bool MessageIsVisible
         {
             get => messageIsVisible;

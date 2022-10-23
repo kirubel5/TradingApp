@@ -14,7 +14,6 @@ namespace TradingApp.ViewModels
     public class AddNewTrackViewModel : ViewModelBase
     {
         #region Fields
-        private string message;
         private string name;
         private bool messageIsVisible;
 
@@ -30,11 +29,7 @@ namespace TradingApp.ViewModels
         }
 
         #region Properties
-        public string Message
-        {
-            get => message;
-            set => SetProperty(ref message, value);
-        }
+       
         public string Name
         {
             get => name;
