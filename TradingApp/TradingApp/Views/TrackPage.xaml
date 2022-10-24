@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradingApp.Views.TrackPage"
              xmlns:viewmodels="clr-namespace:TradingApp.ViewModels" 
-             xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms" 
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              xmlns:converters="clr-namespace:TradingApp.Converters"
              Shell.NavBarIsVisible="False"
@@ -36,11 +35,11 @@
                             
                     <Grid ColumnDefinitions="*, auto">                                
                         <Label 
-                            Text="Track"
+                            Text="Tracked Pairs"
                             Style="{StaticResource SimpleLabelStyle}"
                             Margin="10,-13,0,-10"
                             FontFamily="Montserrat-Regular"
-                            FontSize="25"/>
+                            FontSize="23"/>
                                 
                         <buttons:SfButton
                             Grid.Column="1"
@@ -67,38 +66,24 @@
                     HasShadow="False"
                     CornerRadius="15">
 
-                    <Grid ColumnDefinitions="*, *">
+                    <Grid ColumnDefinitions="*, *, *"
+                          Margin="-5,-10,0,-5">
 
-                        <buttons:SfButton                                    
-                            ShowIcon="False"
-                            ImageSource="Track.png"
-                            ImageAlignment="Top"
-                            ImageWidth="20"
-                            Margin="20,-15,0,-5"
-                            Grid.Column="0"
-                            HorizontalOptions="Center"
-                            HeightRequest="20"
-                            WidthRequest="50"
-                            BackgroundColor="{StaticResource Background}"
-                            CornerRadius="25"
-                            FontFamily="Montserrat-Medium"
-                            FontSize="1"
-                            BackgroundImage="Track.png"
-                            TextColor="{StaticResource Gray-800}"/>
+                        <buttons:SfButton   
+                            Style="{StaticResource TabbarButton}"
+                            Text="Track"/>
 
                         <buttons:SfButton
-                            BackgroundImage="Trade.png"
-                            Margin="0,-15,0,-5"
                             Grid.Column="1"
-                            HorizontalOptions="Center"
-                            HeightRequest="20"
-                            WidthRequest="50"
-                            BackgroundColor="{StaticResource GridBackground}"
-                            CornerRadius="19"
-                            FontFamily="Montserrat-Medium"
-                            FontSize="14"
-                            TextColor="{StaticResource Gray-800}"
-                            Command="{Binding TradeCommand}"/>
+                            Text="Trade"
+                            Style="{StaticResource TabbarButton}"
+                            Command="{Binding GoToTradePage}"/>
+                        
+                        <buttons:SfButton
+                            Grid.Column="2"
+                            Text="Open"
+                            Style="{StaticResource TabbarButton}"
+                            Command="{Binding GoToOpenOrderPage}"/>
                     </Grid>
                 </Frame>
 

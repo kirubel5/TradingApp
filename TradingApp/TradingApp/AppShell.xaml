@@ -24,8 +24,9 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Track" Icon="icon_about.png" Route="TrackPage" ContentTemplate="{DataTemplate local:TrackPage}" />
-        <ShellContent Title="Trade" Icon="icon_feed.png" Route="TradePage" ContentTemplate="{DataTemplate local:TradePage}" />
+        <ShellContent Title="Track" Route="TrackPage" ContentTemplate="{DataTemplate local:TrackPage}" />
+        <ShellContent Title="Trade"  Route="TradePage" ContentTemplate="{DataTemplate local:TradePage}" />
+        <ShellContent Title="OpenOrder" Route="OpenOrderPage" ContentTemplate="{DataTemplate local:OpenOrderPage}" />
     </TabBar>
 
 </Shell>

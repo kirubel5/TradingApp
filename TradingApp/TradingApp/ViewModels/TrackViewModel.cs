@@ -29,7 +29,6 @@ namespace TradingApp.ViewModels
             TrackedTrades = new ObservableRangeCollection<TrackModel>();
 
             AddCommand = new AsyncCommand(OnAddButtonClicked);
-            TradeCommand = new AsyncCommand(OnTradeButtonClicked);
             LoadCommand = new AsyncCommand(Load);
             RightSwipeCommand = new AsyncCommand<object>(OnRightSwipe);
         }
@@ -41,7 +40,6 @@ namespace TradingApp.ViewModels
         #region Commands
 
         public ICommand AddCommand { get; }
-        public ICommand TradeCommand { get; }
         public ICommand RightSwipeCommand { get; }
         public ICommand LoadCommand { get; }
         #endregion
@@ -102,12 +100,7 @@ namespace TradingApp.ViewModels
         private async Task OnAddButtonClicked()
         {
             await Shell.Current.GoToAsync("AddNewTrackPage");
-        }
-
-        private async Task OnTradeButtonClicked()
-        {
-            await Shell.Current.GoToAsync("//TradePage");
-        }
+        }       
 
         private async Task OnRightSwipe(object obj)
         {

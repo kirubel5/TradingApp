@@ -38,11 +38,11 @@
                     
                     <Grid ColumnDefinitions="*, auto">
                         <Label 
-                            Text="Trade"
+                            Text="Traded Pairs"
                             Style="{StaticResource SimpleLabelStyle}"
                             Margin="10,-13,0,-10"
                             FontFamily="Montserrat-Regular"
-                            FontSize="25"/>
+                            FontSize="23"/>
                         <buttons:SfButton
                             Grid.Column="1"
                             HorizontalOptions="EndAndExpand"
@@ -118,49 +118,33 @@
                 <Frame            
                     Grid.Row="3"
                     BackgroundColor="{StaticResource GridBackground}"
-                    Margin="0,1,0,-10"
+                    Margin="0,2,0,-10"
                     HeightRequest="22"
                     HasShadow="False"
                     CornerRadius="15">
 
-                    <Grid ColumnDefinitions="*, *">
+                    <Grid ColumnDefinitions="*, *, *"
+                          Margin="-5,-10,0,-5">
 
-                        <buttons:SfButton                                    
-                            ShowIcon="False"
-                            ImageSource="Track.png"
-                            ImageAlignment="Top"
-                            ImageWidth="20"
-                            Margin="20,-15,0,-5"
-                            Grid.Column="0"
-                            HorizontalOptions="Center"
-                            HeightRequest="20"
-                            WidthRequest="50"
-                            BackgroundColor="{StaticResource GridBackground}"
-                            CornerRadius="19"
-                            FontFamily="Montserrat-Medium"
-                            FontSize="1"
-                            BackgroundImage="Track.png"
-                            TextColor="{StaticResource Gray-800}"
-                            Command="{Binding TrackCommand}"/>
+                        <buttons:SfButton   
+                            Style="{StaticResource TabbarButton}"
+                            Text="Track"
+                            Command="{Binding GoToTrackPage}"/>
 
                         <buttons:SfButton
-                            BackgroundImage="Trade.png"
-                            Margin="0,-15,0,-5"
                             Grid.Column="1"
-                            ImageAlignment="Top"
-                            VerticalTextAlignment="End"
-                            HorizontalOptions="Center"
-                            HeightRequest="20"
-                            WidthRequest="50"
-                            BackgroundColor="{StaticResource Background}"
-                            CornerRadius="25"
-                            FontFamily="Montserrat-Medium"
-                            FontSize="14"
-                            TextColor="{StaticResource Gray-800}"
-                            />
+                            Text="Trade"
+                            Style="{StaticResource TabbarButton}"/>
+
+                        <buttons:SfButton
+                            Grid.Column="2"
+                            Text="Open"
+                            Style="{StaticResource TabbarButton}"
+                            Command="{Binding GoToOpenOrderPage}"/>
                     </Grid>
                 </Frame>
 
+                <!--Data-->
                 <RefreshView    
                         Grid.Row="2"
                         IsRefreshing="{Binding IsRefreshing}"
@@ -176,8 +160,7 @@
                             ItemSizingStrategy="MeasureAllItems"
                             HeightRequest="50"
                             SelectionMode="None"
-                            BackgroundColor="{StaticResource Background}"
-                                >
+                            BackgroundColor="{StaticResource Background}">
 
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout
@@ -213,7 +196,7 @@
 
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Padding="0,7,0,-10" 
+                                <Grid Padding="0,5,0,-7" 
                                             Margin="0,0,0,0" 
                                             BackgroundColor="{StaticResource Background}">
 
@@ -454,7 +437,7 @@
                                 Style="{StaticResource SimpleLabelStyle}"
                                 TextColor="WhiteSmoke"
                                 HorizontalOptions="Center"
-                               Margin="7"/>
+                               Margin="7,0,0,0"/>
 
                         <!--Amount-->
                         <Label Text="Amount"

@@ -26,7 +26,6 @@ namespace TradingApp.Views
         {
             base.OnAppearing();
 
-            await tradeViewModel.Load();
             await tradeViewModel.OnAppearingDisplay();
         }
     }

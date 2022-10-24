@@ -123,7 +123,7 @@ namespace TradingApp.Services
                  {
                     Name = "DATA_USDT",
                     EntryPrice = 0.029,
-                    ClosePrice = 0.029,
+                    ClosePrice = 0.0348,
                     StopLossPrice = 0.02775,
                     TakeProfitPrice = 0.0348,
                     Amount = 9,

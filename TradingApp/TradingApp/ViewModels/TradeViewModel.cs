@@ -3,6 +3,7 @@ using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TradingApp.Enums;
@@ -45,12 +46,13 @@ namespace TradingApp.ViewModels
             _dataService = new DataService();
             _validator = new Validator();
 
-            TrackCommand = new AsyncCommand(OnTrackButtonClicked);
             AddCommand = new AsyncCommand(OnAddButtonClicked);
             LoadCommand = new AsyncCommand(Load);
             EditTradeCommand = new AsyncCommand<object>(OnEditTrade);
+
             LeftSwipeCommand = new AsyncCommand<object>(OnLeftSwipe);
             RightSwipeCommand = new AsyncCommand<object>(OnRightSwipe);
+
             ShowAllTradesCommand = new Command(OnShowAll);
             ShowDoneTradesCommand = new Command(OnShowDone);
             ShowInProgressTradesCommand = new Command(OnShowInProgress);
@@ -125,7 +127,6 @@ namespace TradingApp.ViewModels
         public ICommand ShowLossTradesCommand { get; }
         public ICommand LeftSwipeCommand { get; }
         public ICommand RightSwipeCommand { get; }
-        public ICommand TrackCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand LoadCommand { get; }
         public ICommand EditTradeCommand { get; }
@@ -133,13 +134,12 @@ namespace TradingApp.ViewModels
         #endregion
 
         #region Methods    
-        public async Task Load()
+        private async Task Load()
         {
             if (IsBusy)
                 return;
 
             IsBusy = true;
-            ShimmerIsActive = true;
             IsRefreshing = true;
             TotalFrameIsVisible = false;
 
@@ -200,12 +200,7 @@ namespace TradingApp.ViewModels
 
             await Shell.Current.GoToAsync("AddNewTradePage");
         }
-
-        private async Task OnTrackButtonClicked()
-        {
-            await Shell.Current.GoToAsync("//TrackPage");
-        }
-
+               
         private async Task OnAddButtonClicked()
         {
             await Shell.Current.GoToAsync("AddNewTradePage");
@@ -376,12 +371,12 @@ namespace TradingApp.ViewModels
 
             try
             {
-                SavedTrades?.Clear();
-                SavedTrades.AddRange(savedTrades.Where(x => x.Status == Status.InProgress.ToString()).ToList());
+                await this.Load();
 
-                if (SavedTrades is null || SavedTrades.Count == 0)
+                if (savedTrades.Where(x => x.Status == Status.InProgress.ToString()).Count() > 0)
                 {
-                    await this.Load();
+                    SavedTrades?.Clear();
+                    SavedTrades.AddRange(savedTrades.Where(x => x.Status == Status.InProgress.ToString()).ToList());
                 }
             }
             catch (Exception)
@@ -483,7 +478,7 @@ namespace TradingApp.ViewModels
 
 
         }
-
+               
         #endregion
     }
 }
