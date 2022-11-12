@@ -37,33 +37,44 @@
             </Frame>
 
             <!--Tabbar-->
-            <Frame      
-                Grid.Row="2"
-                BackgroundColor="{StaticResource GridBackground}"
-                Margin="0,1,0,-10"
-                HeightRequest="22"
-                HasShadow="False"
-                CornerRadius="15">
+            <Frame            
+                    Grid.Row="2"
+                    BackgroundColor="{StaticResource GridBackground}"
+                    Margin="0,1,0,-10"
+                    HeightRequest="60"
+                    HasShadow="False"
+                    CornerRadius="15"
+                    Padding="0">
 
-                <Grid ColumnDefinitions="*, *, *"
-                        Margin="-5,-10,0,-5">
+                <ScrollView BackgroundColor="{StaticResource GridBackground}"
+                        Orientation="Horizontal"
+                        Margin="0"
+                        Padding="20">
 
-                    <buttons:SfButton   
-                        Style="{StaticResource TabbarButton}"
-                        Text="Track"
-                        Command="{Binding GoToTrackPage}"/>
+                    <StackLayout Orientation="Horizontal"
+                            Margin="-5,-10,0,-5">
 
-                    <buttons:SfButton
-                        Grid.Column="1"
-                        Text="Trade"
-                        Style="{StaticResource TabbarButton}"
-                        Command="{Binding GoToTradePage}"/>
+                        <buttons:SfButton   
+                                Style="{StaticResource TabbarButton}"
+                                Command="{Binding GoToTrackPage}"
+                                Text="Track"/>
 
-                    <buttons:SfButton
-                        Grid.Column="2"
-                        Text="Open"
-                        Style="{StaticResource TabbarButton}"/>
-                </Grid>
+                        <buttons:SfButton
+                                Text="Trade"
+                                Style="{StaticResource TabbarButton}"
+                                Command="{Binding GoToTradePage}"/>
+
+                        <buttons:SfButton
+                                Text="Arbitrage"
+                                Style="{StaticResource TabbarButton}"
+                                Command="{Binding GoToTradePage}"/>
+
+                        <buttons:SfButton
+                                Text="Open"
+                                Style="{StaticResource TabbarButton}"/>
+                    </StackLayout>
+                </ScrollView>
+
             </Frame>
 
             <Frame Grid.Row="1"
