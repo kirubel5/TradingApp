@@ -28,5 +28,12 @@ namespace TradingApp.Services
 
         };
 
+        public List<ArbitragePriceModel> ArbitragePrices = new List<ArbitragePriceModel>()
+        {
+            new ArbitragePriceModel {ExchangeName = "Binance", AskPrice = 20200, BidPrice=201995},
+            new ArbitragePriceModel {ExchangeName = "GateIo", AskPrice = 20201, BidPrice=201994},
+            new ArbitragePriceModel {ExchangeName = "OkEx", AskPrice = 20240, BidPrice=201905},
+        };
+
     }
 }

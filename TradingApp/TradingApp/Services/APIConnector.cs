@@ -8,31 +8,45 @@ namespace TradingApp.Services
 {
     public class APIConnector
     {
+        //Lets not make the api connector a singleton, because we want to connect to different addresses
         private static HttpClient apiClient;
-        private static APIConnector instance;
-        private APIConnector()
+        //private static APIConnector instance;
+
+        public APIConnector(string exchangeName)
         {
-            InitializeClient();
+            InitializeClient(exchangeName);
         }
 
-        public static APIConnector GetApiConnectorInstance()
-        {
-            if (instance == null)
-            {
-                instance = new APIConnector();
-            }
+        //public static APIConnector GetApiConnectorInstance(string exchangeName)
+        //{
+        //    //if (instance == null)
+        //    //{
+        //    //    instance = new APIConnector();
+        //    //}
 
-            return instance;
-        }
+        //    //return instance;
+
+        //    //everytime we get new ApiConnector, I dont know if this is a good idea
+        //    return new APIConnector(exchangeName);
+        //}
 
         public HttpClient ApiClient
         {
             get => apiClient;
         }
 
-        private static void InitializeClient()
+        private static void InitializeClient(string exchangeName)
         {
-            string api = "https://api.gateio.ws/api/v4/spot/tickers";
+            string api = "";
+
+            if (exchangeName == "GateIo")
+                api = "https://api.gateio.ws/api/v4/spot/tickers";
+            else if (exchangeName == "Binance")
+                api = "https://api.binance.com/api/v3/ticker/bookTicker";
+            else if (exchangeName == "OkEx")
+                api = "https://www.okx.com/api/v5/market/ticker";
+            else
+                api = "https://api.gateio.ws/api/v4/spot/tickers"; // for safe keeping
 
             apiClient = new HttpClient();
             apiClient.BaseAddress = new Uri(api);

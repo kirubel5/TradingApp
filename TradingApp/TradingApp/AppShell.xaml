@@ -27,6 +27,7 @@
         <ShellContent Title="Track" Route="TrackPage" ContentTemplate="{DataTemplate local:TrackPage}" />
         <ShellContent Title="Trade"  Route="TradePage" ContentTemplate="{DataTemplate local:TradePage}" />
         <ShellContent Title="OpenOrder" Route="OpenOrderPage" ContentTemplate="{DataTemplate local:OpenOrderPage}" />
+        <ShellContent Title="ArbitrageTrack" Route="ArbitrageTrackPage" ContentTemplate="{DataTemplate local:ArbitrageTrackPage}" />
     </TabBar>
 
 </Shell>

@@ -77,7 +77,7 @@ namespace TradingApp.Services
 
             foreach (var item in data)
             {
-                var (_, result) = await new Endpoints().GetQuote(item.Name);
+                var (_, result) = await Endpoints.GetGateIoTicker(item.Name);
                
                 item.CurrentPrice = double.Parse(result.last);
                 item.High = double.Parse(result.high_24h);
@@ -117,12 +117,72 @@ namespace TradingApp.Services
 
         public static async Task<bool> CheckQuote(string name)
         {           
-            var (result, _) = await new Endpoints().GetQuote(name);
+            var (result, _) = await Endpoints.GetGateIoTicker(name);
 
             if (!result)
                 return false;
             else
                 return true;           
+        }
+
+        public static async Task<IEnumerable<ArbitragePriceModel>> LoadArbitrageInformation(string quoteName, string baseName)
+        {
+            List<ArbitragePriceModel> data = new List<ArbitragePriceModel>();
+
+            try
+            {
+                var (result1, value1) = await Endpoints.GetGateIoTicker(baseName + "_" + quoteName);
+
+                if(result1 && value1 != null )
+                {
+                    data.Add(new ArbitragePriceModel
+                    {
+                        ExchangeName = "GateIo",
+                        BidPrice = double.Parse(value1.highest_bid),
+                        AskPrice = double.Parse(value1.lowest_ask)
+                    });
+                }
+                else
+                {
+                    data.Add(new ArbitragePriceModel
+                    {
+                        ExchangeName = "GateIo",
+                        BidPrice = 0,
+                        AskPrice = 0
+                    });
+                }
+
+                var (result2, value2) = await Endpoints.GetBinanceTicker(baseName + quoteName);
+                
+                if(result2 && value2 != null)
+                {
+                    data.Add(new ArbitragePriceModel
+                    {
+                        ExchangeName = "Binance",
+                        BidPrice = double.Parse(value2.bidPrice),
+                        AskPrice = double.Parse(value2.askPrice)
+                    });
+                }
+                else
+                {
+                    data.Add(new ArbitragePriceModel
+                    {
+                        ExchangeName = "Binance",
+                        BidPrice = 0,
+                        AskPrice = 0
+                    });
+                }
+
+                var (result3, value3) = await Endpoints.GetOkExTicker(baseName + "-" + quoteName + "-SWAP");
+
+                return data;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 }

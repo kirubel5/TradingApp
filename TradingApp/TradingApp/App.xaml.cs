@@ -36,7 +36,7 @@ namespace TradingApp
         protected async override void OnStart()
         {
             base.OnStart();
-            await Shell.Current.GoToAsync("//TrackPage");
+            await Shell.Current.GoToAsync("//ArbitrageTrackPage");
         }
 
         protected override void OnSleep()

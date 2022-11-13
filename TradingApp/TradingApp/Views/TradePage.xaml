@@ -144,7 +144,7 @@
                             <buttons:SfButton
                                 Text="Arbitrage"
                                 Style="{StaticResource TabbarButton}"
-                                Command="{Binding GoToTradePage}"/>
+                                Command="{Binding GoToArbitrageTrackPage}"/>
 
                             <buttons:SfButton
                                 Text="Open"
